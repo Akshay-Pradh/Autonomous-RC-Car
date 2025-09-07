@@ -303,33 +303,28 @@ void Init_Port_6(void) {
     P6DIR = 0x00; // Set P6 direction to output
 
     // Port 6: Pin 0
-    P6SEL0 &= ~LCD_BACKLITE;    // LCD_BACKLITE GPIO Operation
-    P6SEL1 &= ~LCD_BACKLITE;    // LCD_BACKLITE GPIO Operation
-    P6OUT |= LCD_BACKLITE;      // Initial Value = High
+    P6SEL0 |= LCD_BACKLITE;     // LCD_BACKLITE TB3.1
+    P6SEL1 &= ~LCD_BACKLITE;    // LCD_BACKLITE TB3.1
     P6DIR |= LCD_BACKLITE;      // Direction = output
 
     // Port 6: Pin 1
-    P6SEL0 &= ~R_FORWARD;       // R_FORWARD GPIO Operation
-    P6SEL1 &= ~R_FORWARD;       // R_FORWARD GPIO Operation
-    P6OUT &= ~R_FORWARD;        // Initial Value = Low
+    P6SEL0 |= R_FORWARD;        // R_FORWARD TB3.2
+    P6SEL1 &= ~R_FORWARD;       // R_FORWARD TB3.2
     P6DIR |= R_FORWARD;         // Direction = output
 
     // Port 6: Pin 2
-    P6SEL0 &= ~L_FORWARD;       // L_FORWARD GPIO Operation
-    P6SEL1 &= ~L_FORWARD;       // L_FORWARD GPIO Operation
-    P6OUT &= ~L_FORWARD;        // Initial Value = Low
+    P6SEL0 |= L_FORWARD;         // L_FORWARD TB3.3
+    P6SEL1 &= ~L_FORWARD;       // L_FORWARD TB3.3
     P6DIR |= L_FORWARD;         // Direction = output
 
     // Port 6: Pin 3
-    P6SEL0 &= ~R_REVERSE;       // R_REVERSE GPIO Operation
-    P6SEL1 &= ~R_REVERSE;       // R_REVERSE GPIO Operation
-    P6OUT &= ~R_REVERSE;        // Initial Value = Low
+    P6SEL0 |= R_REVERSE;        // R_REVERSE TB3.4
+    P6SEL1 &= ~R_REVERSE;       // R_REVERSE TB3.4
     P6DIR |= R_REVERSE;         // Direction = output
 
     // Port 6: Pin 4
-    P6SEL0 &= ~L_REVERSE;       // L_REVERSE GPIO Operation
-    P6SEL1 &= ~L_REVERSE;       // L_REVERSE GPIO Operation
-    P6OUT &= ~L_REVERSE;        // Initial Value = Low
+    P6SEL0 |= L_REVERSE;        // L_REVERSE TB3.5
+    P6SEL1 &= ~L_REVERSE;       // L_REVERSE TB3.5
     P6DIR |= L_REVERSE;         // Direction = output
 
     // Port 6: Pin 5
@@ -355,29 +350,40 @@ void Init_Ports(void) {
 }
 
 void Motors_Off(void) {
-    P6OUT &= ~R_FORWARD;
-    P6OUT &= ~L_FORWARD;
-    P6OUT &= ~R_REVERSE;
-    P6OUT &= ~L_REVERSE;
+    wheel_event = INITIATE_STOP;
 }
 
 void Forward_On(void) {
-    P6OUT |= R_FORWARD;
-    P6OUT |= L_FORWARD;
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = FORWARD_C;
+    TARGET_SPEED_LEFT = SLOW;
+    TARGET_SPEED_RIGHT = SLOW;
 }
 
 void Forward_Off(void) {
-    P6OUT &= ~R_FORWARD;
-    P6OUT &= ~L_FORWARD;
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = FORWARD_C;
+    TARGET_SPEED_LEFT = WHEEL_OFF;
+    TARGET_SPEED_RIGHT = WHEEL_OFF;
 }
 
 void Reverse_On(void) {
-    P6OUT |= R_REVERSE;
-    P6OUT |= L_REVERSE;
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = REVERSE_C;
+    TARGET_SPEED_LEFT = SLOW;
+    TARGET_SPEED_RIGHT = SLOW;
 }
 
 void Reverse_Off(void) {
-    P6OUT &= ~R_REVERSE;
-    P6OUT &= ~L_REVERSE;
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = REVERSE_C;
+    TARGET_SPEED_LEFT = WHEEL_OFF;
+    TARGET_SPEED_RIGHT = WHEEL_OFF;
 }
 
+void Spin_Clock(void) {
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = SPIN;
+    TARGET_SPEED_LEFT = SLOWER;
+    TARGET_SPEED_RIGHT = SLOWER;
+}

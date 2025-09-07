@@ -20,9 +20,10 @@
 #include "ports.h"
 #include "system.h"
 #include "switches.h"
-#include "shapes.h"
 #include "timers.h"
 #include "akshay_state_machine.h"
+#include "ADC.h"
+#include "wheels.h"
 
 
 // COMMON ======================================================================
@@ -41,7 +42,6 @@
 #define NO                  (0)
 
 // PROJECT 05 MOVEMENTS ========================================================
-
 #define MOVEMENT_1            (0x00)
 #define MOVEMENT_2            (0x01)
 #define MOVEMENT_3            (0x02)
@@ -57,55 +57,72 @@
 #define SPIN_COUNTERCLOCK     ('C')
 #define STOP                  ('T')
 
-
-
-// SHAPE STATES ================================================================
-#define NONE                  ('N')
-#define STRAIGHT              ('L')
-#define CIRCLE                ('C')
-#define FIG8                  ('F')
-#define TRIANGLE              ('T')
-#define WAIT                  ('W')
-#define START                 ('S')
-#define RUN                   ('R')
-#define RUN_REV               ('P')
-#define RUN_TURN              ('X')
-#define END                   ('E')
-#define WAITING2START          (50)
-
-// STRAIGHT
-#define WHEEL_COUNT_TIME       (10)
-#define RIGHT_COUNT_TIME        (3)
-#define LEFT_COUNT_TIME         (8)
-#define TRAVEL_DISTANCE        (10)
-
-// CIRCLE
-#define WHEEL_COUNT_TIME_CIRC  (20)
-#define RIGHT_COUNT_TIME_CIRC  (16)
-#define LEFT_COUNT_TIME_CIRC    (3)
-#define CIRCLE_DISTANCE        (70)
-
-// FIGURE-8
-#define WHEEL_COUNT_TIME_FIG8  (20)
-
-#define RIGHT_COUNT1_TIME_FIG8 (16)
-#define RIGHT_COUNT2_TIME_FIG8  (2)
-
-#define LEFT_COUNT1_TIME_FIG8   (3)
-#define LEFT_COUNT2_TIME_FIG8  (20)
-
-#define FIG8_DISTANCE_F        (35)
-#define FIG8_DISTANCE_R        (45)
-
-// TRIANGLE
-
-#define WHEEL_COUNT_TIME_TURN   (20)
-#define RIGHT_TURN_TIME          (7)
-#define TURN_DISTANCE           (10)
-
 // TIMERS ======================================================================
+
+// Timer B0
+#define TIMER_B0_CCR0_VECTOR         TIMER0_B0_VECTOR
+#define TIMER_B0_CCR1_2_OV_VECTOR    TIMER0_B1_VECTOR
 #define TB0CCR0_INTERVAL    (25000)     // 8,000,000 / 8 / 8 / (1 / 200msec)
 #define DEBOUNCE_INTERVAL   (25000)     // 8,000,000 / 8 / 8 / (1 / 200msec)
+
+// Timer B1
+#define TIMER_B1_CCR0_VECTOR         TIMER1_B0_VECTOR
+#define TIMER_B1_CCR1_2_OV_VECTOR    TIMER1_B1_VECTOR
+#define TB1CCR0_INTERVAL    (1250)      // 8,000,000 / 8 / 8 / (1 / 10msec)
+#define TB1CCR1_INTERVAL    (31250)     // 8,000,000 / 8 / 8 / (1 / 250msec)
+
+// Timer B2
+#define TIMER_B2_CCR0_VECTOR         TIMER2_B0_VECTOR
+#define TIMER_B2_CCR1_2_OV_VECTOR    TIMER2_B1_VECTOR
+
+//Timer B3
+#define TIMER_B3_CCR0_VECTOR         TIMER3_B0_VECTOR
+#define TIMER_B3_CCR1_2_OV_VECTOR    TIMER3_B1_VECTOR
+
+// PWM =========================================================================
+#define PWM_PERIOD              (TB3CCR0)
+#define LCD_BACKLITE_DIMMING    (TB3CCR1)
+#define RIGHT_FORWARD_SPEED     (TB3CCR2)
+#define RIGHT_REVERSE_SPEED     (TB3CCR3)
+#define LEFT_FORWARD_SPEED      (TB3CCR4)
+#define LEFT_REVERSE_SPEED      (TB3CCR5)
+
+#define SPEED_STEP      (1000)
+#define WHEEL_PERIOD    (50005)
+#define WHEEL_OFF       (0)
+#define SLOW            (20000)
+#define SLOWER          (10000)
+#define FAST            (50000)
+#define PERCENT_100     (50000)
+#define PERCENT_80      (40000)
+
+// wheel_events
+#define NONE                        ('N')
+#define IDLE                        ('I')
+#define CONFIGURE_WHEEL_SPEEDS      ('C')
+#define FORWARD_MOVE_START          ('F')
+#define FORWARD_ADJUST              ('A')
+#define REVERSE_MOVE_START          ('R')
+#define REVERSE_ADJUST              ('D')
+#define SPIN_MOVE_START             ('G')
+#define SPIN_ADJUST                 ('H')
+#define INITIATE_STOP               ('N')
+#define STOP_WHEELS                 ('S')
+
+// configs
+#define FORWARD_C                   ('F')
+#define REVERSE_C                   ('R')
+#define SPIN                        ('S')
+#define OFF                         ('O')
+
+// PROJECT06_STATE_MACHINE =====================================================
+
+// events
+#define IDLE            ('I')
+#define FIND_BLACK      ('F')
+#define FOUND_BLACK     ('B')
+#define LONG_STOP       ('L')
+#define ORIENT_BLACK    ('O')
 
 // PORTS =======================================================================
 #define FALSE                  (0x00) //
@@ -115,12 +132,6 @@
 #define SMCLK_ON               (0x01) //
 #define PORTS                  (0x00) // RED LED 0
 #define PWM_MODE               (0x01) // GREEN LED 1
-#define WHEEL_OFF              (0x00)
-#define WHEEL_PERIOD          (10000)
-#define RIGHT_FORWARD_SPEED (TB3CCR2)
-#define RIGHT_REVERSE_SPEED (TB3CCR3)
-#define LEFT_FORWARD_SPEED  (TB3CCR4)
-#define LEFT_REVERSE_SPEED  (TB3CCR5)
 #define STEP                   (2000)
 #define FORWARD                (0x00) // FORWARD
 #define REVERSE                (0x01) // REVERSE

@@ -48,7 +48,6 @@ volatile unsigned int segment_count;
 //-------------------------------------------------------------------------------
 // PORTS
 // ------------------------------------------------------------------------------
-
 volatile unsigned int debounce_count_sw1;
 volatile unsigned char debounce_in_progress_sw1;
 volatile unsigned char sw1_pressed;
@@ -60,8 +59,26 @@ volatile unsigned char sw2_pressed;
 //-------------------------------------------------------------------------------
 // TIMERS
 // ------------------------------------------------------------------------------
-
 extern volatile unsigned int Time;
 extern volatile unsigned int Curr_Time;
+
+//-------------------------------------------------------------------------------
+// ADC
+// ------------------------------------------------------------------------------
+char adc_char[4];
+volatile char ADC_DISPLAY;
+extern volatile unsigned int ADC_Channel;
+volatile unsigned int ADC_Left_Detect;
+volatile unsigned int ADC_Right_Detect;
+volatile unsigned int ADC_Thumb;
+
+//-------------------------------------------------------------------------------
+// WHEELS
+// ------------------------------------------------------------------------------
+extern unsigned char wheel_event;
+extern unsigned char config;
+unsigned int TARGET_SPEED_RIGHT;
+unsigned int TARGET_SPEED_LEFT;
+
 
 #endif /* GLOBALS_H_ */

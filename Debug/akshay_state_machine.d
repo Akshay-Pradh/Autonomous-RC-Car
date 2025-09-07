@@ -23,9 +23,10 @@ akshay_state_machine.obj: ../led.h
 akshay_state_machine.obj: ../ports.h
 akshay_state_machine.obj: ../system.h
 akshay_state_machine.obj: ../switches.h
-akshay_state_machine.obj: ../shapes.h
 akshay_state_machine.obj: ../timers.h
 akshay_state_machine.obj: ../akshay_state_machine.h
+akshay_state_machine.obj: ../ADC.h
+akshay_state_machine.obj: ../wheels.h
 
 ../akshay_state_machine.c:
 
@@ -73,9 +74,11 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../switches.h:
 
-../shapes.h:
-
 ../timers.h:
 
 ../akshay_state_machine.h:
+
+../ADC.h:
+
+../wheels.h:
 

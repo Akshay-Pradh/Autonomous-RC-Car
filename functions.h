@@ -16,8 +16,19 @@ void Init_Conditions(void);
 
 // Interrupts
 void enable_interrupts(void);
-__interrupt void Timer0_B0_ISR(void);
+
+// Timer 0
+__interrupt void Timer_B0_CCR0_ISR(void);
+__interrupt void Timer_B0_CCR1_2_OV_VECTOR_ISR(void);
+
+// Timer 1
+__interrupt void Timer_B1_CCR1_ISR(void);
+__interrupt void Timer_B1_CCR1_2_OV_VECTOR_ISR(void);
+
+// Switches
 __interrupt void switch_interrupt(void);
+__interrupt void switchP4_interrupt(void);
+__interrupt void switchP2_interrupt(void);
 
 // Analog to Digital Converter
 
@@ -114,13 +125,6 @@ void Switch1_Process(void);
 void Switch2_Process(void);
 void menu_act(void);
 void menu_select(void);
-
-// Timers
-void Init_Timers(void);
-void Init_Timer_B0(void);
-void Init_Timer_B1(void);
-void Init_Timer_B2(void);
-void Init_Timer_B3(void);
 
 void usleep(unsigned int usec);
 void usleep10(unsigned int usec);

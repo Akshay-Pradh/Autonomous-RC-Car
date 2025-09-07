@@ -8,6 +8,7 @@
 #include "macros.h"
 
 // Globals
+volatile unsigned int sw2_toggle = 0;
 
 void Switches_Process(void) {
     //------------------------------------------------------------------------------
@@ -26,11 +27,11 @@ void Switch1_Process(void){
      if (sw1_pressed){
                  // SW1 is pressed
                  sw1_pressed = NO;
-                 strcpy(display_line[0], "  SWITCH  ");
-                 strcpy(display_line[1], "    1     ");
-                 strcpy(display_line[2], "          ");
-                 strcpy(display_line[3], "  ECE306  ");
+                 strcpy(display_line[0], " FINDING  ");
+                 strcpy(display_line[1], " BLK LINE ");
                  display_changed = TRUE;
+                 Curr_Time = Time;
+                 event = FIND_BLACK;
      }
 }
 
@@ -42,11 +43,21 @@ void Switch2_Process(void){
     if (sw2_pressed){
                   // SW2 is pressed
                   sw2_pressed = NO;
-                  strcpy(display_line[0], "  SWITCH  ");
-                  strcpy(display_line[1], "    2     ");
-                  strcpy(display_line[2], "          ");
-                  strcpy(display_line[3], "  ECE306  ");
-                  display_changed = TRUE;
+                  sw2_toggle++;
+
+                  if (sw2_toggle == 1){
+                      strcpy(display_line[0], " EMMITER  ");
+                      strcpy(display_line[1], "    ON    ");
+                      display_changed = TRUE;
+                      P2OUT |= IR_LED;          // Enable Emitter
+                  }
+                  if (sw2_toggle == 2){
+                      strcpy(display_line[0], " EMMITER  ");
+                      strcpy(display_line[1], "    OFF    ");
+                      display_changed = TRUE;
+                      P2OUT &= ~IR_LED;        // Disable Emitter
+                  }
+                  if (sw2_toggle >= 3) sw2_toggle = 0;
     }
 }
 

@@ -23,9 +23,10 @@ display.obj: ../led.h
 display.obj: ../ports.h
 display.obj: ../system.h
 display.obj: ../switches.h
-display.obj: ../shapes.h
 display.obj: ../timers.h
 display.obj: ../akshay_state_machine.h
+display.obj: ../ADC.h
+display.obj: ../wheels.h
 
 ../display.c:
 
@@ -73,9 +74,11 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../switches.h:
 
-../shapes.h:
-
 ../timers.h:
 
 ../akshay_state_machine.h:
+
+../ADC.h:
+
+../wheels.h:
 

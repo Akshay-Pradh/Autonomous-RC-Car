@@ -2,7 +2,7 @@
  * akshay_state_machine.h
  *
  *  Created on: Feb 19, 2025
- *      Author: apcoo
+ *      Author: Akshay Pradhan
  */
 
 #ifndef AKSHAY_STATE_MACHINE_H_
@@ -22,7 +22,5 @@ void RunMovement2(void);
 void RunMovement3(void);
 void RunMovement4(void);
 void RunMovement5(void);
-
-
 
 #endif /* AKSHAY_STATE_MACHINE_H_ */

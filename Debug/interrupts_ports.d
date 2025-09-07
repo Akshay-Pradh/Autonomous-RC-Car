@@ -23,9 +23,10 @@ interrupts_ports.obj: ../led.h
 interrupts_ports.obj: ../ports.h
 interrupts_ports.obj: ../system.h
 interrupts_ports.obj: ../switches.h
-interrupts_ports.obj: ../shapes.h
 interrupts_ports.obj: ../timers.h
 interrupts_ports.obj: ../akshay_state_machine.h
+interrupts_ports.obj: ../ADC.h
+interrupts_ports.obj: ../wheels.h
 
 ../interrupts_ports.c:
 
@@ -73,9 +74,11 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../switches.h:
 
-../shapes.h:
-
 ../timers.h:
 
 ../akshay_state_machine.h:
+
+../ADC.h:
+
+../wheels.h:
 

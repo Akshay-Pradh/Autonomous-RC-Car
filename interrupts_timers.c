@@ -7,20 +7,24 @@
 
 #include "macros.h"
 
-#pragma vector = TIMER0_B0_VECTOR
-__interrupt void Timer0_B0_ISR(void){
+//-------------------------------------------------------------------------------
+//                                  TIMER 0
+//-------------------------------------------------------------------------------
+
+
+#pragma vector=TIMER_B0_CCR0_VECTOR
+__interrupt void Timer_B0_CCR0_ISR(void){
      //---------------------------------------------------------------------------
      // TimerB0 0 Interrupt handler
      //---------------------------------------------------------------------------
      update_display = TRUE;
-     P6OUT ^= LCD_BACKLITE;      // Toggle LCD_BACKLITE
-     TB0CCR0 += TB0CCR0_INTERVAL;
-     // Add Offset to TBCCR0
+     Time++;
+     TB0CCR0 += TB0CCR0_INTERVAL;   // Add Offset to TB0CCR0
      //---------------------------------------------------------------------------
 }
 
-#pragma vector=TIMER0_B1_VECTOR
-__interrupt void TIMER0_B1_ISR(void){
+#pragma vector=TIMER_B0_CCR1_2_OV_VECTOR
+__interrupt void Timer_B0_CCR1_2_OV_VECTOR_ISR(void){
     //---------------------------------------------------------------------------
     // TimerB0 1-2, Overflow Interrupt Vector (TBIV) handler
     //---------------------------------------------------------------------------
@@ -35,7 +39,6 @@ __interrupt void TIMER0_B1_ISR(void){
                     debounce_in_progress_sw1 = NO;
                     P4IE |= SW1;        // re-enable SW1 interrupt
                     TB0CCTL1 &= ~CCIE;  // disable debounce timer
-                    TB0CCTL0 |= CCIE;   // re-enable TimerB0_0 (continue LCD blinking)
                 }
             }
             break;
@@ -47,7 +50,6 @@ __interrupt void TIMER0_B1_ISR(void){
                     debounce_in_progress_sw2 = NO;
                     P2IE |= SW2;        // re-enable SW1 interrupt
                     TB0CCTL2 &= ~CCIE;  // disable debounce timer
-                    TB0CCTL0 |= CCIE;   // re-enable TimerB0_0 (continue LCD blinking)
                 }
             }
             break;
@@ -58,6 +60,46 @@ __interrupt void TIMER0_B1_ISR(void){
     }
 
 }
+
+//-------------------------------------------------------------------------------
+//                                  TIMER 1
+//-------------------------------------------------------------------------------
+
+#pragma vector=TIMER_B1_CCR0_VECTOR
+__interrupt void Timer_B1_CCR0_ISR(void){
+    //---------------------------------------------------------------------------
+    // TimerB1 0 Interrupt handler
+    //---------------------------------------------------------------------------
+    ADCCTL0 |= ADCSC;               // Start next ADC sample (every 10msec)
+    TB1CCR0 += TB1CCR0_INTERVAL;    // Add Offset to TB1CCR0
+    //---------------------------------------------------------------------------
+}
+
+#pragma vector=TIMER_B1_CCR1_2_OV_VECTOR
+__interrupt void Timer_B1_CCR1_2_OV_VECTOR_ISR(void){
+    //---------------------------------------------------------------------------
+    // TimerB1 1-2, Overflow Interrupt Vector (TBIV) handler
+    //---------------------------------------------------------------------------
+    switch(__even_in_range(TB1IV,14)){
+        case  0: break;
+            // No interrupt
+        case  2:
+            // ADC Display update interrupt
+            ADC_DISPLAY = 1;
+            TB1CCR1 += TB1CCR1_INTERVAL;
+            break;
+        case  4:
+            break;
+        case 14:
+            // overflow
+            break;
+        default: break;
+    }
+}
+
+
+//-------------------------------------------------------------------------------
+//                                  TIMER 2
 //-------------------------------------------------------------------------------
 
 

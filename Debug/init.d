@@ -23,9 +23,10 @@ init.obj: ../led.h
 init.obj: ../ports.h
 init.obj: ../system.h
 init.obj: ../switches.h
-init.obj: ../shapes.h
 init.obj: ../timers.h
 init.obj: ../akshay_state_machine.h
+init.obj: ../ADC.h
+init.obj: ../wheels.h
 
 ../init.c:
 
@@ -73,9 +74,11 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../switches.h:
 
-../shapes.h:
-
 ../timers.h:
 
 ../akshay_state_machine.h:
+
+../ADC.h:
+
+../wheels.h:
 

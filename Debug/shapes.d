@@ -26,6 +26,8 @@ shapes.obj: ../switches.h
 shapes.obj: ../shapes.h
 shapes.obj: ../timers.h
 shapes.obj: ../akshay_state_machine.h
+shapes.obj: ../ADC.h
+shapes.obj: ../wheels.h
 
 ../shapes.c:
 
@@ -78,4 +80,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 ../timers.h:
 
 ../akshay_state_machine.h:
+
+../ADC.h:
+
+../wheels.h:
 

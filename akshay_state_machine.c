@@ -181,7 +181,7 @@ void run_forward(void) {
     strcpy(display_line[2], "  FORWARD ");
     strcpy(display_line[3], "          ");
     display_changed = TRUE;
-    Forward_On();
+//    Forward_On();
     state = STOP;
 }
 void run_reverse(void) {
@@ -190,7 +190,7 @@ void run_reverse(void) {
     strcpy(display_line[2], "  REVERSE ");
     strcpy(display_line[3], "          ");
     display_changed = TRUE;
-    Reverse_On();
+//    Reverse_On();
     state = STOP;
 }
 
@@ -211,7 +211,8 @@ void spinclock(void){
     strcpy(display_line[2], "CLOCKWISE ");
     strcpy(display_line[3], "          ");
     display_changed = TRUE;
-    P6OUT |= L_FORWARD;
+//    P6OUT |= L_FORWARD;
+//    P6OUT |= R_REVERSE;
     state = STOP;
 }
 void spincounterclock(void){
@@ -220,6 +221,7 @@ void spincounterclock(void){
     strcpy(display_line[2], "  COUNTER ");
     strcpy(display_line[3], "CLOCKWISE ");
     display_changed = TRUE;
-    P6OUT |= R_FORWARD;
+//    P6OUT |= R_FORWARD;
+//    P6OUT |= L_REVERSE;
     state = STOP;
 }

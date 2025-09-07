@@ -23,9 +23,10 @@ clocks.obj: ../led.h
 clocks.obj: ../ports.h
 clocks.obj: ../system.h
 clocks.obj: ../switches.h
-clocks.obj: ../shapes.h
 clocks.obj: ../timers.h
 clocks.obj: ../akshay_state_machine.h
+clocks.obj: ../ADC.h
+clocks.obj: ../wheels.h
 
 ../clocks.c:
 
@@ -73,9 +74,11 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../switches.h:
 
-../shapes.h:
-
 ../timers.h:
 
 ../akshay_state_machine.h:
+
+../ADC.h:
+
+../wheels.h:
 
