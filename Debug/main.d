@@ -24,6 +24,8 @@ main.obj: ../ports.h
 main.obj: ../system.h
 main.obj: ../switches.h
 main.obj: ../shapes.h
+main.obj: ../timers.h
+main.obj: ../akshay_state_machine.h
 
 ../main.c:
 
@@ -72,4 +74,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 ../switches.h:
 
 ../shapes.h:
+
+../timers.h:
+
+../akshay_state_machine.h:
 

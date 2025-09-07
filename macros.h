@@ -21,6 +21,8 @@
 #include "system.h"
 #include "switches.h"
 #include "shapes.h"
+#include "timers.h"
+#include "akshay_state_machine.h"
 
 
 // COMMON ======================================================================
@@ -34,15 +36,28 @@
 #define CLEAR_REGISTER     (0X0000)
 
 // SWITCHES ====================================================================
-#define PRESSED             (0)
-#define RELEASED            (1)
-#define DEBOUNCE_TIME      (200)
-#define DEBOUNCE_RESTART    (0)
-#define OKAY                (1)
-#define NOT_OKAY            (0)
+#define DEBOUNCE_THRESHOLD  (4)
+#define YES                 (1)
+#define NO                  (0)
+
+// PROJECT 05 MOVEMENTS ========================================================
+#define MOVEMENT_1            (0x00)
+#define MOVEMENT_2            (0x01)
+#define MOVEMENT_3            (0x02)
+#define MOVEMENT_4            (0x03)
+#define MOVEMENT_5            (0x04)
+#define NONE                  ('N')
+#define WAIT                  ('W')
+#define MOVE_FORWARD          ('F')
+#define PAUSE                 ('P')
+#define PASS_MOVEMENT         ('M')
+#define MOVE_REVERSE          ('R')
+#define SPIN_CLOCK            ('S')
+#define SPIN_COUNTERCLOCK     ('C')
+#define STOP                  ('T')
 
 
-// STATES ======================================================================
+// SHAPE STATES ================================================================
 #define NONE                  ('N')
 #define STRAIGHT              ('L')
 #define CIRCLE                ('C')
@@ -86,6 +101,10 @@
 #define RIGHT_TURN_TIME          (7)
 #define TURN_DISTANCE           (10)
 
+// TIMERS ======================================================================
+#define TB0CCR0_INTERVAL    (25000)     // 8,000,000 / 8 / 8 / (1 / 200msec)
+#define DEBOUNCE_INTERVAL   (25000)     // 8,000,000 / 8 / 8 / (1 / 200msec)
+
 // PORTS =======================================================================
 #define FALSE                  (0x00) //
 #define TRUE                   (0x01) //
@@ -115,14 +134,15 @@
 #define UCA0TXD                (0x80) // 1.7 Back Channel UCA0TXD
 
 // Port 2 Pins
-#define SLOW_CLK               (0x01) // 2.0 SLOW_CLK
-#define CHECK_BAT              (0x02) // 2.1 CHECK_BAT
-#define IR_LED                 (0x04) // 2.2 IR LED
-#define SW2                    (0x08) // 2.3 SW2
-#define IOT_RUN_CPU            (0x10) // 2.4 IOT_RUN_RED
-#define DAC_ENB                (0x20) // 2.5 DAC_ENB
-#define LFXOUT                 (0x40) // 2.6 XOUT
-#define LFXIN                  (0x80) // 2.7 XIN
+#define SLOW_CLK               (0x01)   // 2.0 SLOW_CLK
+#define CHECK_BAT              (0x02)   // 2.1 CHECK_BAT
+#define IR_LED                 (0x04)   // 2.2 IR LED
+#define SW2                    (0x08)   // 2.3 SW2
+#define IOT_RUN_CPU            (0x10)   // 2.4 IOT_RUN_RED
+#define DAC_ENB                (0x20)   // 2.5 DAC_ENB
+#define LFXOUT                 (0x40)   // 2.6 XOUT
+#define LFXIN                  (0x80)   // 2.7 XIN
+#define P2PUD                  (P2OUT)  // P2PUD easier to read than P2OUT for pull-up
 
 // Port 3 Pins
 #define TEST_PROBE             (0x01) // 3.0 TEST PROBE
@@ -137,14 +157,15 @@
 #define USE_SMCLK              (0x01)
 
 // Port 4 Pins
-#define RESET_LCD              (0x01) // 4.0 RESET_LCD
-#define SW1                    (0x02) // 4.1 SW1
-#define UCA1RXD                (0x04) // 4.2 Back Channel UCA1RXD
-#define UCA1TXD                (0x08) // 4.3 Back Channel UCA1TXD
-#define UCB1_CS_LCD            (0x10) // 4.4 Chip Select
-#define UCB1CLK                (0x20) // 4.5 SPI mode - clock output—UCB1CLK
-#define UCB1SIMO               (0x40) // 4.6 UCB1SIMO
-#define UCB1SOMI               (0x80) // 4.7 UCB1SOMI
+#define RESET_LCD              (0x01)   // 4.0 RESET_LCD
+#define SW1                    (0x02)   // 4.1 SW1
+#define UCA1RXD                (0x04)   // 4.2 Back Channel UCA1RXD
+#define UCA1TXD                (0x08)   // 4.3 Back Channel UCA1TXD
+#define UCB1_CS_LCD            (0x10)   // 4.4 Chip Select
+#define UCB1CLK                (0x20)   // 4.5 SPI mode - clock output—UCB1CLK
+#define UCB1SIMO               (0x40)   // 4.6 UCB1SIMO
+#define UCB1SOMI               (0x80)   // 4.7 UCB1SOMI
+#define P4PUD                  (P4OUT)  // P4PUD easier to read than P4OUT for pull-up
 
 // Port 5 Pins
 #define V_BAT                  (0x01) // 5.0 V_BAT

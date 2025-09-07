@@ -91,9 +91,12 @@ void Init_Port_2(void) {
      // Port 2: Pin 3
      P2SEL0 &= ~SW2;        // SW2 Operation
      P2SEL1 &= ~SW2;        // SW2 Operation
-     P2OUT |= SW2;          // Configure pullup resistor
+     P2PUD |= SW2;          // Configure pullup resistor
      P2DIR &= ~SW2;         // Direction = input
      P2REN |= SW2;          // Enable pullup resistor
+     P2IES |= SW2;          // SW2 Hi/Lo edge interrupt
+     P2IFG &= ~SW2;         // IFG SW1 cleared
+     P2IE |= SW2;           // SW2 interrupt Enabled
 
      // Port 2: Pin 4
      P2SEL0 &= ~IOT_RUN_CPU;    // IOT_RUN_CPU GPIO Operation
@@ -217,9 +220,12 @@ void Init_Port_4(void) {
      // Port 4: Pin 1
      P4SEL0 &= ~SW1;    // SW1 GPIO operation
      P4SEL1 &= ~SW1;    // SW1 GPIO operation
-     P4OUT |= SW1;      // Configure pullup resistor
+     P4PUD |= SW1;      // Configure pullup resistor
      P4DIR &= ~SW1;     // Direction = input
      P4REN |= SW1;      // Enable pullup resistor
+     P4IES |= SW1;      // SW1 Hi/Lo edge interrupt
+     P4IFG &= ~SW1;     // IFG SW1 cleared
+     P4IE |= SW1;       // SW1 interrupt Enabled
 
      // Port 4: Pin 2
      P4SEL0 |= UCA1RXD;     // UCA1 RXD operation
@@ -346,6 +352,13 @@ void Init_Ports(void) {
     Init_Port_4();                     // Initialize Port 4
     Init_Port_5();                     // Initialize Port 5
     Init_Port_6();                     // Initialize Port 6
+}
+
+void Motors_Off(void) {
+    P6OUT &= ~R_FORWARD;
+    P6OUT &= ~L_FORWARD;
+    P6OUT &= ~R_REVERSE;
+    P6OUT &= ~L_REVERSE;
 }
 
 void Forward_On(void) {

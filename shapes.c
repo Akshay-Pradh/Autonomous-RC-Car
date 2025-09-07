@@ -9,8 +9,6 @@
 
 // Globals
 volatile unsigned int delay_start = 0;
-volatile unsigned char state = WAIT;
-
 unsigned int circle_count = 2;
 unsigned int fig8_count = 3;
 unsigned int triangle_count = 9;

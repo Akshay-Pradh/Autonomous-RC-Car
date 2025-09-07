@@ -48,35 +48,53 @@ void main(void){
 // Beginning of the "While" Operating System
 //------------------------------------------------------------------------------
   while(ALWAYS) {                      // Can the Operating system run
-    Carlson_StateMachine();            // Run a Time Based State Machine
+//    Carlson_StateMachine();            // Run a Time Based State Machine
+
     Switches_Process();                // Check for switch state change
     Display_Process();                 // Update Display
     P3OUT ^= TEST_PROBE;               // Change State of TEST_PROBE OFF
 
-    // Creating a time value
-    if(Last_Time_Sequence != Time_Sequence){
-        Last_Time_Sequence = Time_Sequence;
-        cycle_time++;
-        time_change = 1;
+    // Creating a time value (Carlson State Machine)
+//    if(Last_Time_Sequence != Time_Sequence){
+//        Last_Time_Sequence = Time_Sequence;
+//        cycle_time++;
+//        time_change = 1;
+//    }
+
+//     Check if FORWARD and REVERSE motors are running at same time
+    if ((P6IN & L_FORWARD) & (P6IN & L_REVERSE)) {
+        P6OUT &= ~L_FORWARD;
+        P6OUT &= ~L_REVERSE;
+        P1OUT |= RED_LED;       // turn on RED_LED
     }
 
-    // Calling State Machine for SHAPES
-//    switch(event){
-//        case  STRAIGHT:                    // Straight
-//            Run_Straight();
-//            break;                             //
-//        case  CIRCLE:                      // Circle
-//            Run_Circle();
-//            break;                             //
-//        case FIG8:                         // Figure-8
-//            Run_Fig8();
-//            break;                             //
-//        case TRIANGLE:                   // Triangle
-//            Run_Triangle();
-//            break;                             //
-//        default: break;
-//    }
-  }
+    if ((P6IN & R_FORWARD) & (P6IN & R_REVERSE)) {
+        P6OUT &= ~R_FORWARD;
+        P6OUT &= ~R_REVERSE;
+        P1OUT |= RED_LED;      // turn on RED_LED
+    }
+
+    // State Machine for Project05
+    switch(event) {
+        case MOVEMENT_1:
+            RunMovement1();
+            break;
+        case MOVEMENT_2:
+            RunMovement2();
+            break;
+        case MOVEMENT_3:
+            RunMovement3();
+            break;
+        case MOVEMENT_4:
+            RunMovement4();
+            break;
+        case MOVEMENT_5:
+            RunMovement5();
+            break;
+        default: break;
+    }
+
+}
 //------------------------------------------------------------------------------
 
 }
