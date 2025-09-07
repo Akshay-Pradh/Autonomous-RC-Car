@@ -1,2 +1,2 @@
-# RC-Car-Embedded-System
-ECE306 RC Car Embedded System code written in C in code composer 
+# Autonomous-RC-Car
+Autonomous RC Car Embedded System code written in C in code composer 
