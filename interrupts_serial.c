@@ -18,6 +18,10 @@ __interrupt void eUSCI_A0_ISR(void){
             iot_value = UCA0RXBUF;
 
             if (iot_value == '^') {
+                if (!TIME_DISPLAY) {
+                    TIME_DISPLAY = YES;         // if not displaying time, display time (when we get our first command)
+                    START_TIME = Time;
+                }
                 if (iot_command_complete) {     // flag here makes sure that the previous command was completed, set high at the end of all command sequences
                     iot_command_complete = NO;        // set the command_complete to NO when we receive a command
                     iot_command_received = YES;       // set the iot_command_recived flag to YES when we received a new IOT command
@@ -38,7 +42,8 @@ __interrupt void eUSCI_A0_ISR(void){
                for (i = 0; i < sizeof(iot_transmit_array); i++) {   // clearing the transmit array
                    iot_transmit_array[i] = 0x00;
                }
-               UCA0IE &= ~UCTXIE;               // disable the transmit interrupt
+               UCA0IE &= ~UCTXIE;                                   // disable the transmit interrupt
+               if (Start_Pinging)  iot_command_complete = YES;      // we can clear iot_command_complete if pinging is happening
             }
             else {
                iot_t_index++;                   // increment t_index

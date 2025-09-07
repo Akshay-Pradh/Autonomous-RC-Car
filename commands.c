@@ -118,6 +118,7 @@ void IOT_Process(void) {
                              }
                              iot_t_index = 0;       // reset iot transmit index to 0 (might not need this)
                              UCA0IE |= UCTXIE;      // enable UCA0TX
+                             Start_Pinging = YES;   // set the Start Pinging flag to HIGH
                         }
                     }
                     break;
@@ -146,10 +147,10 @@ void IOT_Process(void) {
                 case 10:
                     if(IOT_buffer[iot_index_row][iot_index_col] == 'I') {
                         ip_address_found = YES;
-                        strcpy(display_line[1], "IP Address");
                         display_changed = TRUE;
-                        for (i = 0; i < sizeof(ip_address); i++) {    // clearing the ip address array for display (with spaces)
-                            ip_address[i] = ' ';
+                        for (i = 0; i < sizeof(ip_address1); i++) {    // clearing the ip address array for display (with spaces)
+                            ip_address1[i] = ' ';
+                            ip_address2[i] = ' ';
                         }
                     }
                     else if(IOT_buffer[iot_index_row][iot_index_col] == 'M') {

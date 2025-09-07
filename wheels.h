@@ -10,6 +10,7 @@
 
 void Wheels_Process(void);
 void Motion_Process(void);
+void Intercept_Process(void);
 
 void Forward_On(void);
 void Forward_Off(void);
@@ -19,9 +20,11 @@ void Spin_Clock(void);
 void Spin_Counter_Clock(void);
 void Motors_Off(void);
 
-void Circle_Path(void);
-void Circle_Adjust_IN(void);
-void Circle_Adjust_OUT(void);
+void Curve_Right(void);
+void Forward_Fast_On(void);
+void Follow_Path(void);
+void Follow_Adjust_IN(void);
+void Follow_Adjust_OUT(void);
 
 
 

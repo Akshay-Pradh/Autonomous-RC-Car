@@ -31,18 +31,46 @@ void Switch1_Process(void){
                  sw1_pressed = NO;
                  sw1_toggle++;
 
-//                 if (sw1_toggle == 1) {
-//                    strcpy(display_line[2], "460,800 Hz");
-//                    display_changed = TRUE;
-//                    setBaudRate(460800);                        // set our baud rate to 460,800 Hz
-//
-//                 }
-//                 else if (sw1_toggle == 2) {
-//                    strcpy(display_line[2], "115,200 Hz");
-//                    display_changed = TRUE;
-//                    setBaudRate(115200);                        // set our baud rate to 115,200 Hz
-//                 }
-//                 else sw1_toggle = 0;
+                 if (sw1_toggle == 1){
+                  clear_display();
+                  CALIBRATE= YES;
+                  strcpy(display_line[0], "CALIBRATE ");
+                  strcpy(display_line[1], "IR_LED ON ");
+                  display_changed = TRUE;
+                  P2OUT |= IR_LED;
+                  // start the timers
+                  TB1CCTL0 |= CCIE;
+                  TB1CCTL1 |= CCIE;
+                }
+                if (sw1_toggle == 2){
+                  strcpy(display_line[0], "BLACK SET ");
+                  display_changed = TRUE;
+                  BLACK_THRESHOLD = (ADC_Left_Detect + ADC_Right_Detect) / 2;   // use left and right average
+                }
+                if (sw1_toggle == 3){
+                  strcpy(display_line[0], "WHITE SET ");
+                  display_changed = TRUE;
+                  WHITE_THRESHOLD = (ADC_Left_Detect + ADC_Right_Detect) / 2;  // use left and right average
+                }
+                if (sw1_toggle > 3){
+                  // reconfigure the display
+                  GREY_THRESHOLD = BLACK_THRESHOLD - 150;
+                  clear_display();
+                  strcpy(display_line[0], " Waiting  ");
+                  strcpy(display_line[1], "for input ");
+                  strncpy(display_line[2], ip_address1, 10);
+                  strncpy(display_line[3], ip_address2, 10);
+                  display_changed = TRUE;
+
+                  // stop the timers
+                  TB1CCTL0 &= ~CCIE;
+                  TB1CCTL1 &= ~CCIE;
+                  P2OUT &= ~IR_LED;
+                  sw2_toggle = 0;
+
+                  CALIBRATE = NO;
+                }
+
      }
 }
 

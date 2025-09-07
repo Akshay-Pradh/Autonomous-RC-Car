@@ -81,7 +81,9 @@ extern unsigned int iot_t_index;
 extern unsigned int IOT_parse;
 extern unsigned int ip_address_found;
 
-char ip_address[10];
+char ip_address1[10];
+char ip_address2[10];
+
 char ssid_display[10];
 extern unsigned int ssid_found;
 
@@ -91,6 +93,11 @@ extern char ip_mac[10];
 extern char ssid[12];
 extern char mux[13];
 extern char server[22];
+
+// Internet Pinging
+extern unsigned char ping_internet;
+extern unsigned char Start_Pinging;
+extern unsigned int ping_count;
 
 //------------------------------------------------------------------------------
 // DAC
@@ -135,7 +142,8 @@ unsigned int START_TIME;
 // ADC
 // ------------------------------------------------------------------------------
 char adc_char[4];
-volatile char ADC_DISPLAY;
+extern volatile char ADC_DISPLAY;
+extern unsigned char CALIBRATE;
 extern volatile unsigned int ADC_Channel;
 volatile unsigned int ADC_Left_Detect;
 volatile unsigned int ADC_Right_Detect;
@@ -144,21 +152,28 @@ volatile unsigned int ADC_Thumb;
 //-------------------------------------------------------------------------------
 // WHEELS
 // ------------------------------------------------------------------------------
-extern unsigned char wheel_event;
+extern unsigned char wheel_event;       // for basic movement state machine
 extern unsigned char config;
+
 unsigned int TARGET_SPEED_RIGHT;
 unsigned int TARGET_SPEED_LEFT;
+
 unsigned int RADIUS_TIME;
 unsigned int SPIN_TIME;
 
-extern unsigned char movement_letter;
+extern unsigned char movement_letter;   // for choice of movement state machine
 extern unsigned int movement_duration;
+
+extern unsigned char intercept_event;   // for interception movement
 
 //-------------------------------------------------------------------------------
 // LINE DETECTION
 // ------------------------------------------------------------------------------
 extern unsigned int BLACK_THRESHOLD;
 extern unsigned int WHITE_THRESHOLD;
+extern unsigned int GREY_THRESHOLD;
+
+extern unsigned char TRAVELLING;
 
 
 #endif /* GLOBALS_H_ */

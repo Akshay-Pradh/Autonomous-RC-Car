@@ -7,6 +7,9 @@
 
 #include "macros.h"
 
+volatile char ADC_DISPLAY = NO;
+unsigned char CALIBRATE = NO;
+
 void Init_ADC(void){
     //------------------------------------------------------------------------------
     // V_DETECT_L (0x04) // Pin 2 A2

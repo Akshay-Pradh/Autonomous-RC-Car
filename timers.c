@@ -11,7 +11,7 @@
 volatile unsigned int Time = 0;             // time measurement (every 200ms)
 volatile unsigned int Time_Precise = 0;     // time measurement (every 50ms)
 volatile unsigned int Curr_Time = 0;        // current time measurement
-unsigned char TIME_DISPLAY = FALSE;         // initialize display timer to false
+unsigned char TIME_DISPLAY = NO;            // initialize display timer to NO
 
 //-------------------------------------------------------------------------------
 // Timer B0 initialization sets up both B0_0, B0_1-B0_2 and overflow
@@ -47,16 +47,14 @@ void Init_Timer_B1(void) {
     TB1CTL |= ID__8;                // Divide clock by 8
     TB1EX0 = TBIDEX__8;             // Divide clock by an additional 8
 
-    // dont need these interrupts enabled for homework and project 8 since it is all to do with ADC and Movement
+    TB1CCR0 = TB1CCR0_INTERVAL;        // CCR0 (ADC reading update, every 10ms)
+    TB1CCTL0 &= ~CCIE;                 // CCR0 enable interrupt (disabled, will enable when using ADC)
 
-    TB1CCR0 = TB1CCR0_INTERVAL;      // CCR0
-    TB1CCTL0 |= CCIE;               // CCR0 enable interrupt
-
-    TB1CCR1 = TB1CCR1_INTERVAL;         // CCR1 enabled (ADC)
-    TB1CCTL1 &= ~CCIE;                  // CCR1 enable interrupt (disabled, will enable when using ADC)
+    TB1CCR1 = TB1CCR1_INTERVAL;        // CCR1 enabled (ADC display update)
+    TB1CCTL1 &= ~CCIE;                 // CCR1 enable interrupt (disabled, will enable when using ADC)
 
     TB1CCR2 = TB1CCR2_INTERVAL;        // CCR2 enabled
-    TB1CCTL2 |= CCIE;                  // CCR2 enable interrupt (will eventually write the code to have this timer go on and off)
+    TB1CCTL2 |= CCIE;                  // CCR2 enable interrupt (precise timer)
 
     TB1CTL &= ~TBIE;              // Disable Overflow Interrupt
     TB1CTL &= ~TBIFG;             // Clear Overflow Interrupt flag
@@ -106,24 +104,24 @@ void Init_Timers(void) {
 void Display_Time(void) {
 
     unsigned int time_val = Time - START_TIME;
-    char time_char[5];
+    char time_char[4];
     unsigned int value = 0;
     unsigned int i;
 
     // populate array with 0's
-    for(i = 0; i < 5; i++) {
+    for(i = 0; i < 4; i++) {
         time_char[i] = '0';
     }
 
     // set decimal point
-    time_char[3] = '.';
+    time_char[3] = 's';
 
-    // 999.8sec = 4999
-    if (time_val > 4999) {
+    // 999sec = 4995
+    if (time_val > 4995) {
         return;
     }
 
-    // 100.0sec - 999.8sec ------> 500 - 4999
+    // 100sec - 999sec ------> 500 - 4995
     while (time_val >= 500) {
         time_val = time_val - 500;
         value += 1;
@@ -131,7 +129,7 @@ void Display_Time(void) {
     time_char[0] = 0x30 + value;
     value = 0;
 
-    // 10.0sec - 100.0sec -------> 50 - 500
+    // 10sec - 100sec -------> 50 - 500
     while (time_val >= 50) {
         time_val = time_val - 50;
         value += 1;
@@ -139,7 +137,7 @@ void Display_Time(void) {
     time_char[1] = 0x30 + value;
     value = 0;
 
-    // 1.0sec - 10.0sec ------> 5.0 - 50.0
+    // 1sec - 10sec ------> 5 - 50
     while (time_val >= 5) {
         time_val = time_val - 5;
         value += 1;
@@ -147,17 +145,12 @@ void Display_Time(void) {
     time_char[2] = 0x30 + value;
     value = 0;
 
-    // 0sec - 1.0sec ------> 0 - 5.0
-    time_char[4] = 0x30 + (time_val * 2);
-
-    // display the string
-    strcpy(display_line[1], "Time:     ");      // empty line 1
-    display_changed = TRUE;
-
     unsigned int j;
-    for (j = 5; j < 10; j++) {
-        display_line[1][j] = time_char[j - 5];
+    for (j = 6; j < 10; j++) {
+        display_line[3][j] = time_char[j - 6];
     }
+
+    display_changed = TRUE;
 
 }
 //------------------------------------------------------------------------------

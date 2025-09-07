@@ -121,24 +121,30 @@
 #define LEFT_FORWARD_SPEED      (TB3CCR4)
 #define LEFT_REVERSE_SPEED      (TB3CCR5)
 
-#define SPEED_STEP      (50)
+#define SPEED_STEP      (500)
 #define WHEEL_PERIOD    (50005)
 #define WHEEL_OFF       (0)
 
-#define SLOW_R          (25000)
+#define SLOW_R          (27000)
 #define SLOW_L          (35000)
 
-#define SLOW_R_FORWARD  (18000)
-#define SLOW_L_FORWARD  (36000)
+#define SLOW_R_FORWARD  (24000)
+#define SLOW_L_FORWARD  (35000)
+
+#define FAST_R_FORWARD  (26000)
+#define FAST_L_FORWARD  (50000)
+
+#define CURVE_FAST      (28000)
+#define CURVE_SLOW      (20000)
 
 #define SLOWER          (20000)
 #define FAST            (50000)
 
 // need to mess around with these
 
-#define CIRCLE_SLOW     (15000)
-#define CIRCLE_SLOWER   (10000)
-#define CIRCLE_ADJ      (7000)
+#define FOLLOW_L        (20000)
+#define FOLLOW_R        (15000)
+#define FOLLOW_ADJ      (15000)
 
 #define PERCENT_100     (50000)
 #define PERCENT_80      (30000)
@@ -166,22 +172,35 @@
 #define OFF                         ('O')
 
 
-// PROJECT07_STATE_MACHINE =====================================================
+// INTERCEPTION_STATE_MACHINE ===================================================
 
-// events
+// interception events
+
 #define IDLE            ('I')
-#define FIND_BLACK      ('F')
-#define FOUND_BLACK     ('B')
-#define STOP            ('T')
-#define ORIENT_BLACK    ('O')
-#define SMALL_STOP      ('S')
-#define CIRCLING        ('C')
-#define ADJUST_OUT      ('U')
-#define ADJUST_IN       ('N')
-#define ORIENT_WHITE    ('W')
-#define ORIENT_CENTER   ('R')
-#define MOVE_CENTER     ('M')
-#define END             ('E')
+
+// movement from pad 8 to the white pad
+#define TURN1           ('A')
+#define STOP1           ('B')
+#define MOVE_STRAIGHT1  ('C')
+#define STOP2           ('D')
+
+#define TURN2           ('E')
+#define MOVE_BLACK      ('F')
+#define FIND_BLACK      ('G')
+#define FOUND_BLACK     ('H')
+
+#define STOP3           ('J')
+#define STOP4           ('K')
+
+#define FOLLOWING       ('L')
+#define ADJUST_OUT      ('M')
+#define ADJUST_IN       ('O')
+
+// these will be our exit states
+#define FINAL_STOP      ('P')
+#define FINAL_TURN      ('Q')
+#define FINAL_LEAVE     ('R')
+#define THE_END         ('S')
 
 // PORTS =======================================================================
 #define FALSE                  (0x00) //

@@ -19,6 +19,13 @@ __interrupt void Timer_B0_CCR0_ISR(void){
      //---------------------------------------------------------------------------
      update_display = TRUE;
      Time++;
+     if (Start_Pinging) {
+         ping_count++;
+         if (ping_count > 25) {
+             ping_count = 0;
+             ping_internet = YES;
+         }
+     }
      TB0CCR0 += TB0CCR0_INTERVAL;   // Add Offset to TB0CCR0
      //---------------------------------------------------------------------------
 }
@@ -56,10 +63,10 @@ __interrupt void Timer_B0_CCR1_2_OV_VECTOR_ISR(void){
         case 14:
             // overflow
             DAC_data = DAC_data - 100;
-            SAC3DAC = DAC_data;             // Initial DAC data
+            SAC3DAT = DAC_data;             // Initial DAC data
             if (DAC_data <= DAC_Limit){
                DAC_data = DAC_Adjust;
-               SAC3DAC = DAC_data;
+               SAC3DAT = DAC_data;
                TB0CTL &= ~TBIE;
                P1OUT &= ~RED_LED;
             }
@@ -93,7 +100,7 @@ __interrupt void Timer_B1_CCR1_2_OV_VECTOR_ISR(void){
             // No interrupt
         case  2:
             // ADC Display update interrupt
-            ADC_DISPLAY = 1;
+            ADC_DISPLAY = YES;
             TB1CCR1 += TB1CCR1_INTERVAL;
             break;
         case  4:

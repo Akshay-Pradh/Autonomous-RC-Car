@@ -188,7 +188,7 @@ void Init_Port_3(unsigned char mode) {
     P3SEL0 &= ~IOT_RN_CPU;     // IOT_RN_CPU GPIO Operation
     P3SEL1 &= ~IOT_RN_CPU;     // IOT_RN_CPU GPIO Operation
     P3OUT &= ~IOT_RN_CPU;      // Initial Value = Low
-    P3DIR |= IOT_RN_CPU;       // Direction = output
+    P3DIR &= ~IOT_RN_CPU;       // Direction = output
     //------------------------------------------------------------------------------
 };
 

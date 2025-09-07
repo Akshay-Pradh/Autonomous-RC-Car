@@ -26,6 +26,10 @@ unsigned int IOT_parse = NO;
 unsigned int ip_address_found = NO;
 unsigned int ssid_found = NO;
 
+unsigned int ping_count = 0;            // initialize ping time count to 0
+unsigned char Start_Pinging = NO;       // intialize Start Pinging flag to NO
+unsigned char ping_internet = NO;       // intialize Ping Internet flag to NO
+
 void Init_Serial_UCA0(void){
     //-----------------------------------------------------------------------------
     //                                               TX error (%) RX error (%)
