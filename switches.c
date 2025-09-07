@@ -38,37 +38,25 @@ void Switch1_Process(void){
                  sw1_position = PRESSED;
                  okay_to_look_at_switch1 = NOT_OKAY;
                  count_debounce_SW1 = DEBOUNCE_RESTART;
-                 shape_sel++;
-                 // do what you want with button press
 
-                 if (shape_sel == 1){
-                     strcpy(display_line[0], "  SELECT  ");
-                     strcpy(display_line[1], "  CIRCLE  ");
-                     strcpy(display_line[2], "          ");
-                     strcpy(display_line[3], "  ECE306  ");
-                     display_changed = TRUE;
+//                 strcpy(display_line[0], "  PORT_3  ");
+//                 strcpy(display_line[1], "  GP/IO   ");
+//                 strcpy(display_line[2], "   LOW    ");
+//                 strcpy(display_line[3], "  ECE306  ");
+//                 display_changed = TRUE;
+//                 Init_Port_3(USE_GPIO);
 
-                 }
-                 if (shape_sel == 2){
-                     strcpy(display_line[0], "  SELECT  ");
-                     strcpy(display_line[1], "  FIGURE  ");
-                     strcpy(display_line[2], "  EIGHT   ");
-                     strcpy(display_line[3], "  ECE306  ");
-                     display_changed = TRUE;
-                 }
-                 if (shape_sel == 3){
-                     strcpy(display_line[0], "  SELECT  ");
-                     strcpy(display_line[1], " TRIANGLE ");
-                     strcpy(display_line[2], "          ");
-                     strcpy(display_line[3], "  ECE306  ");
-                     display_changed = TRUE;
-                 }
-                 if (shape_sel >= 4) shape_sel = 0;
-         }
+                 strcpy(display_line[0], "  PORT_3  ");
+                 strcpy(display_line[1], "  GP/IO   ");
+                 strcpy(display_line[2], "          ");
+                 strcpy(display_line[3], "  ECE306  ");
+                 display_changed = TRUE;
+                 Init_Port_3(USE_GPIO);
+       }
      }
-     if (count_debounce_SW1 <= DEBOUNCE_TIME){
+      if (count_debounce_SW1 <= DEBOUNCE_TIME){
          count_debounce_SW1++;
-     }else{
+      }else{
          okay_to_look_at_switch1 = OKAY;
          if (P4IN & SW1){
              sw1_position = RELEASED;
@@ -87,33 +75,22 @@ void Switch2_Process(void){
                   okay_to_look_at_switch2 = NOT_OKAY;
                   count_debounce_SW2 = DEBOUNCE_RESTART;
 
-                  if (shape_sel == 1){
-                      strcpy(display_line[0], "   TEST   ");
-                      strcpy(display_line[1], "  CIRCLE  ");
-                      strcpy(display_line[2], "          ");
-                      strcpy(display_line[3], "  ECE306  ");
-                      display_changed = TRUE;
-                      event = CIRCLE;
-                  }
-                  if (shape_sel == 2){
-                      strcpy(display_line[0], "   TEST   ");
-                      strcpy(display_line[1], "  FIGURE  ");
-                      strcpy(display_line[2], "  EIGHT   ");
-                      strcpy(display_line[3], "  ECE306  ");
-                      display_changed = TRUE;
-                      event = FIG8;
-                  }
-                  if (shape_sel == 3){
-                      strcpy(display_line[0], "   TEST   ");
-                      strcpy(display_line[1], " TRIANGLE ");
-                      strcpy(display_line[2], "          ");
-                      strcpy(display_line[3], "  ECE306  ");
-                      display_changed = TRUE;
-                      event = TRIANGLE;
-                  }
+//                  strcpy(display_line[0], "  PORT_3  ");
+//                  strcpy(display_line[1], "   GPIO   ");
+//                  strcpy(display_line[2], "   HIGH   ");
+//                  strcpy(display_line[3], "  ECE306  ");
+//                  display_changed = TRUE;
+//                  Init_Port_3(USE_SMCLK);
 
-          }
-      }
+
+                  strcpy(display_line[0], "  PORT_3  ");
+                  strcpy(display_line[1], "  SMCLK   ");
+                  strcpy(display_line[2], "          ");
+                  strcpy(display_line[3], "  ECE306  ");
+                  display_changed = TRUE;
+                  Init_Port_3(USE_SMCLK);
+       }
+    }
       if (count_debounce_SW2 <= DEBOUNCE_TIME){
           count_debounce_SW2++;
       }else{
@@ -121,6 +98,6 @@ void Switch2_Process(void){
           if (P2IN & SW2){
               sw2_position = RELEASED;
           }
-      }
+     }
 }
 

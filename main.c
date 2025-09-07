@@ -61,21 +61,21 @@ void main(void){
     }
 
     // Calling State Machine for SHAPES
-    switch(event){
-        case  STRAIGHT:                    // Straight
-            Run_Straight();
-            break;                             //
-        case  CIRCLE:                      // Circle
-            Run_Circle();
-            break;                             //
-        case FIG8:                         // Figure-8
-            Run_Fig8();
-            break;                             //
-        case TRIANGLE:                   // Triangle
-            Run_Triangle();
-            break;                             //
-        default: break;
-    }
+//    switch(event){
+//        case  STRAIGHT:                    // Straight
+//            Run_Straight();
+//            break;                             //
+//        case  CIRCLE:                      // Circle
+//            Run_Circle();
+//            break;                             //
+//        case FIG8:                         // Figure-8
+//            Run_Fig8();
+//            break;                             //
+//        case TRIANGLE:                   // Triangle
+//            Run_Triangle();
+//            break;                             //
+//        default: break;
+//    }
   }
 //------------------------------------------------------------------------------
 

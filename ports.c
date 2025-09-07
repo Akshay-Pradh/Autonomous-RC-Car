@@ -118,7 +118,7 @@ void Init_Port_2(void) {
 };
 
 
-void Init_Port_3(void) {
+void Init_Port_3(unsigned char mode) {
     /*
      *TEST_PROBE             (0x01) // 3.0 TEST_PROBE
      *OA2O                   (0x02) // 3.1 OA2O
@@ -150,9 +150,27 @@ void Init_Port_3(void) {
     P3SELC |= OA2P;     // OA2P ADC Operation
 
     // Port 3: Pin 4
-    P3SEL0 |= SMCLK_OUT;    // SMCLK_OUT Operation
-    P3SEL1 &= ~SMCLK_OUT;   // SMCLK_OUT Operation
-    P3DIR |= SMCLK_OUT;     // Direction = high
+    // switch case for USE_SMCLK (yes(1) or no(0))
+    switch(mode){
+        case  USE_GPIO:
+            P3SEL0 &= ~SMCLK_OUT;   // SMCLK_OUT GPIO Operation
+            P3SEL1 &= ~SMCLK_OUT;   // SMCLK_OUT GPIO Operation
+            P3OUT |= SMCLK_OUT;    // Initial value = Low
+            P3DIR |= SMCLK_OUT;     // Direction = output
+            break;
+        case  USE_SMCLK:
+//            // using SMCLK to test GPIO high
+//            P3SEL0 &= ~SMCLK_OUT;   // SMCLK_OUT GPIO Operation
+//            P3SEL1 &= ~SMCLK_OUT;   // SMCLK_OUT GPIO Operation
+//            P3OUT |= SMCLK_OUT;     // Initial value = high
+//            P3DIR |= SMCLK_OUT;     // Direction = output
+//            break;
+
+            P3SEL0 |= SMCLK_OUT;    // SMCLK_OUT Operation
+            P3SEL1 &= ~SMCLK_OUT;   // SMCLK_OUT Operation
+            P3DIR |= SMCLK_OUT;     // Direction = high
+            break;
+    }
 
     // Port 3: Pin 5
     P3SEL0 &= ~DAC_CTRL;    // DAC_CTRL GPIO Operation
@@ -322,12 +340,12 @@ void Init_Port_6(void) {
 };
 
 void Init_Ports(void) {
-    Init_Port_1();    // Initialize Port 1
-    Init_Port_2();    // Initialize Port 2
-    Init_Port_3();    // Initialize Port 3
-    Init_Port_4();    // Initialize Port 4
-    Init_Port_5();    // Initialize Port 5
-    Init_Port_6();    // Initialize Port 6
+    Init_Port_1();                     // Initialize Port 1
+    Init_Port_2();                     // Initialize Port 2
+    Init_Port_3(USE_GPIO);             // Initialize Port 3: contain USE_SMCLK parameter (0/1)
+    Init_Port_4();                     // Initialize Port 4
+    Init_Port_5();                     // Initialize Port 5
+    Init_Port_6();                     // Initialize Port 6
 }
 
 void Forward_On(void) {

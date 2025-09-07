@@ -49,6 +49,8 @@ volatile unsigned int right_motor_count;
 volatile unsigned int left_motor_count;
 volatile unsigned int segment_count;
 
-
+//-------------------------------------------------------------------------------
+// PORTS
+// ------------------------------------------------------------------------------
 
 #endif /* GLOBALS_H_ */
