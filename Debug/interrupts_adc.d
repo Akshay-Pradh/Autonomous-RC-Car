@@ -17,6 +17,7 @@ interrupts_adc.obj: ../clocks.h
 interrupts_adc.obj: ../display.h
 interrupts_adc.obj: ../functions.h
 interrupts_adc.obj: ../globals.h
+interrupts_adc.obj: ../macros.h
 interrupts_adc.obj: ../init.h
 interrupts_adc.obj: ../LCD.h
 interrupts_adc.obj: ../led.h
@@ -27,6 +28,7 @@ interrupts_adc.obj: ../timers.h
 interrupts_adc.obj: ../akshay_state_machine.h
 interrupts_adc.obj: ../ADC.h
 interrupts_adc.obj: ../wheels.h
+interrupts_adc.obj: ../serial.h
 
 ../interrupts_adc.c:
 
@@ -62,6 +64,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../globals.h:
 
+../macros.h:
+
 ../init.h:
 
 ../LCD.h:
@@ -81,4 +85,6 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 ../ADC.h:
 
 ../wheels.h:
+
+../serial.h:
 

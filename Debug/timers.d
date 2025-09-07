@@ -17,6 +17,7 @@ timers.obj: ../clocks.h
 timers.obj: ../display.h
 timers.obj: ../functions.h
 timers.obj: ../globals.h
+timers.obj: ../macros.h
 timers.obj: ../init.h
 timers.obj: ../LCD.h
 timers.obj: ../led.h
@@ -27,6 +28,7 @@ timers.obj: ../timers.h
 timers.obj: ../akshay_state_machine.h
 timers.obj: ../ADC.h
 timers.obj: ../wheels.h
+timers.obj: ../serial.h
 
 ../timers.c:
 
@@ -62,6 +64,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../globals.h:
 
+../macros.h:
+
 ../init.h:
 
 ../LCD.h:
@@ -81,4 +85,6 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 ../ADC.h:
 
 ../wheels.h:
+
+../serial.h:
 

@@ -17,6 +17,7 @@ switches.obj: ../clocks.h
 switches.obj: ../display.h
 switches.obj: ../functions.h
 switches.obj: ../globals.h
+switches.obj: ../macros.h
 switches.obj: ../init.h
 switches.obj: ../LCD.h
 switches.obj: ../led.h
@@ -27,6 +28,7 @@ switches.obj: ../timers.h
 switches.obj: ../akshay_state_machine.h
 switches.obj: ../ADC.h
 switches.obj: ../wheels.h
+switches.obj: ../serial.h
 
 ../switches.c:
 
@@ -62,6 +64,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../globals.h:
 
+../macros.h:
+
 ../init.h:
 
 ../LCD.h:
@@ -81,4 +85,6 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 ../ADC.h:
 
 ../wheels.h:
+
+../serial.h:
 

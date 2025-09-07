@@ -24,6 +24,7 @@
 #include "akshay_state_machine.h"
 #include "ADC.h"
 #include "wheels.h"
+#include "serial.h"
 
 
 // COMMON ======================================================================
@@ -35,6 +36,14 @@
 #define TRUE                 (0x01) //
 #define MCLK_FREQ_MHZ           (8) // MCLK = 8MHz
 #define CLEAR_REGISTER     (0X0000)
+
+// SERIAL ======================================================================
+#define BEGINNING (0)
+#define SMALL_RING_SIZE (16)
+#define LARGE_RING_SIZE (32)
+
+#define ROWS    (4)
+#define COLUMNS (32)
 
 // SWITCHES ====================================================================
 #define DEBOUNCE_THRESHOLD  (4)
@@ -104,7 +113,7 @@
 #define CIRCLE_ADJ      (7000)
 
 #define PERCENT_100     (50000)
-#define PERCENT_80      (40000)
+#define PERCENT_80      (30000)
 
 // wheel_events
 #define NONE                        ('N')

@@ -30,21 +30,26 @@ void main(void){
   Init_Timers();                       // Initialize Timers
   Init_LCD();                          // Initialize LCD
   Init_ADC();                          // Initialize ADC (start reading values)
+//  Init_Serial_UCA0();                  // Initialize UCA0
+  Init_Serial_UCA1();                  // Initialize UCA1
   //P2OUT &= ~RESET_LCD;
+
   // Place the contents of what you want on the display, in between the quotes
   // Limited to 10 characters per line
-  strcpy(display_line[0], "   IDLE   ");
-  strcpy(display_line[1], "          ");
+  strcpy(display_line[0], "          ");
+  strcpy(display_line[1], "LOADING...");
   strcpy(display_line[2], "          ");
   strcpy(display_line[3], "          ");
   display_changed = TRUE;
 
-//  Display_Update(0,0,0,0);
+  Display_Update(0,0,0,0);
 
   // Defaults:
-  wheel_move = 0;
-  forward = TRUE;
-  event = IDLE;
+//  wheel_move = 0;
+//  forward = TRUE;
+//  event = IDLE;
+
+  unsigned int Splash = 1;  // 5 second splash code
 
 //  P2OUT |= IR_LED;        // testing IR LED
 //------------------------------------------------------------------------------
@@ -57,163 +62,45 @@ void main(void){
 
     P3OUT ^= TEST_PROBE;               // Change State of TEST_PROBE OFF
 
-    // ADC Display Update (every 250ms, set high in interrupts)
-    if (ADC_DISPLAY) {
-        ADC_DISPLAY = 0;
-        strcpy(display_line[2], "LD:       ");
-        strcpy(display_line[3], "RD:       ");
-        HEXtoBCD(ADC_Left_Detect);
-        adc_line(3, 3);
-        HEXtoBCD(ADC_Right_Detect);
-        adc_line(4, 3);
+    if (Splash && (Time > 25)) {
+        strcpy(display_line[0], "          ");
+        strcpy(display_line[1], "          ");
+        strcpy(display_line[2], "Baud Rate:");
+        strcpy(display_line[3], "460,800 Hz");
         display_changed = TRUE;
+        Splash = 0;
     }
 
-//     State Machine for Project07
-    switch (event) {
-        case IDLE:
-            break;
+    // flash beginning info for 5 seconds
 
-        case FIND_BLACK:
-           // write a 1 second delay (Time increases every 200ms)
-           // we will need to write a value to keep track of the time it takes us to find the black line and use that to go back to center
-           if (Time > Curr_Time + 4){
-               Forward_On();
-               strcpy(display_line[0], " LOOKING! ");
-               display_changed = TRUE;
-               Curr_Time = Time_Precise;
-               event = FOUND_BLACK;
-           }
-           break;
+    // check if rd != wr
+    // assuming my process buffer is long enough to hold any message (for now)
 
-        case FOUND_BLACK:
-            // if right and left values are correct
-           if (ADC_Right_Detect > BLACK_THRESHOLD || ADC_Left_Detect > BLACK_THRESHOLD) {
-               Forward_Off();
-               strcpy(display_line[0], "  FOUND!  ");
-               display_changed = TRUE;
-               RADIUS_TIME = Time_Precise - Curr_Time;  // we use this time to get back to the center
-               Curr_Time = Time;
-               event = STOP;
-           }
-           break;
+    if (usb_rx_ring_rd != usb_rx_ring_wr) {
+        if (USB_Char_Rx[usb_rx_ring_rd] == '\n') {
+            display_row = pb_index_row;   // save the row index for displaying
+            pb_index_row++;               // move to next row
+            if (pb_index_row >= ROWS) pb_index_row = 0;
+            pb_index_col = 0;             // reset the column to 0
 
-        case STOP:
-           if (Time > Curr_Time + 14)  {
-               Curr_Time = Time_Precise;    // will be used to calculate spin time for return
-               Spin_Clock();
-               strcpy(display_line[0], " SPINNING ");
-               display_changed = TRUE;
-               event = ORIENT_BLACK;
-           }
-           break;
+            // Clear the following row
+            int i;
+            for (i = 0; i < COLUMNS; i++) {                 // clear the next line
+               process_buffer[pb_index_row][i] = 0x00;
+            }
+            // display the message on the process buffer
+            strncpy(display_line[0], process_buffer[display_row], 10);
+            display_changed = TRUE;
+        }
+        else {
+            process_buffer[pb_index_row][pb_index_col] = USB_Char_Rx[usb_rx_ring_rd]; // get character from ring buffer to process buffer
+            pb_index_col++;     // increment process buffer pointer
+            // dont check for the end of column (assume that process buffer long enough to store any message
+        }
 
-        case ORIENT_BLACK:
-           if (ADC_Right_Detect > BLACK_THRESHOLD || ADC_Left_Detect > BLACK_THRESHOLD) {
-              Motors_Off();
-              strcpy(display_line[0], " CIRCLING ");
-              display_changed = TRUE;
-              SPIN_TIME = Time_Precise - Curr_Time;
-              Curr_Time = Time;
-              event = SMALL_STOP;
-           }
-           break;
+        usb_rx_ring_rd++;   // increment ring rd index
+        if (usb_rx_ring_rd >= (sizeof(USB_Char_Rx))) usb_rx_ring_rd = BEGINNING;   // Circular buffer back to beginning
 
-        case SMALL_STOP:
-           if (Time > Curr_Time + 5) {
-               Circle_Path();
-               START_TIME = Time;
-               TIME_DISPLAY = TRUE;  // start the display timer
-               Curr_Time = Time;
-               event = CIRCLING;
-           }
-           break;
-
-        case CIRCLING:
-           // eventually will check Curr_Time against Time to have it circle twice
-           // currently infinitely loops here
-
-           // if we are moving inside the circle
-           if (Time < Curr_Time + 204) {
-               if (ADC_Right_Detect < BLACK_THRESHOLD - 100) {      // -100 for some extra tolerance while adjusting
-                  strcpy(display_line[0], " ADJ_INW! ");
-                  display_changed = TRUE;
-                  Circle_Adjust_IN();
-                  event = ADJUST_IN;
-              }
-
-              // if we are moving outside the circle
-              if (ADC_Left_Detect < BLACK_THRESHOLD - 100) {       // -100 for some extra tolerance while adjusting
-                  strcpy(display_line[0], " ADJ_OUT! ");
-                  display_changed = TRUE;
-                  Circle_Adjust_OUT();
-                  event = ADJUST_OUT;
-              }
-           }
-           else {
-               Motors_Off();
-               TIME_DISPLAY = FALSE;
-               Curr_Time = Time;
-               event = ORIENT_WHITE;
-           }
-           break;
-
-        case ADJUST_OUT:
-           if (ADC_Left_Detect > BLACK_THRESHOLD) {
-               strcpy(display_line[0], " CIRCLING ");
-               display_changed = TRUE;
-               Circle_Path();
-               event = CIRCLING;
-           }
-           break;
-
-        case ADJUST_IN:
-           if (ADC_Right_Detect > BLACK_THRESHOLD) {
-               strcpy(display_line[0], " CIRCLING ");
-               display_changed = TRUE;
-               Circle_Path();
-               event = CIRCLING;
-           }
-           break;
-
-        case ORIENT_WHITE:
-           if (Time > Curr_Time + 5) {  // 1 second break between Motors_Off() and Spin_Clock()
-               strcpy(display_line[0], " SPINNING ");
-               display_changed = TRUE;
-               Spin_Clock();
-               Curr_Time = Time_Precise;
-               event = ORIENT_CENTER;
-           }
-           break;
-
-       case ORIENT_CENTER:
-           if (Time_Precise - Curr_Time >= SPIN_TIME - 1) { // slight adjustment for accuracy
-               Motors_Off();
-               strcpy(display_line[0], "HEADED BCK");
-               display_changed = TRUE;
-               Curr_Time = Time;
-               event = MOVE_CENTER;
-           }
-           break;
-
-       case MOVE_CENTER:
-           if (Time > Curr_Time + 14) {     // 3 second break after spinning before moving forward
-               Forward_On();
-               Curr_Time = Time_Precise;
-               event = END;
-           }
-           break;
-
-       case END:
-           if (Time_Precise - Curr_Time >= RADIUS_TIME) {   // move forward as long as it took for us to get from center to circumference
-               Motors_Off();
-               strcpy(display_line[0], "   DONE   ");
-               display_changed = TRUE;
-               P2OUT &= ~IR_LED;
-               event = IDLE;
-           }
-
-        default: break;
     }
 
   }

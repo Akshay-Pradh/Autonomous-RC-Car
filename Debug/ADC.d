@@ -17,6 +17,7 @@ ADC.obj: ../clocks.h
 ADC.obj: ../display.h
 ADC.obj: ../functions.h
 ADC.obj: ../globals.h
+ADC.obj: ../macros.h
 ADC.obj: ../init.h
 ADC.obj: ../LCD.h
 ADC.obj: ../led.h
@@ -27,6 +28,7 @@ ADC.obj: ../timers.h
 ADC.obj: ../akshay_state_machine.h
 ADC.obj: ../ADC.h
 ADC.obj: ../wheels.h
+ADC.obj: ../serial.h
 
 ../ADC.c:
 
@@ -62,6 +64,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../globals.h:
 
+../macros.h:
+
 ../init.h:
 
 ../LCD.h:
@@ -81,4 +85,6 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 ../ADC.h:
 
 ../wheels.h:
+
+../serial.h:
 

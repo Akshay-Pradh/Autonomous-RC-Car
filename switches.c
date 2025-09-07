@@ -26,10 +26,21 @@ void Switch1_Process(void){
     //------------------------------------------------------------------------------
      if (sw1_pressed){
                  // SW1 is pressed
-                 sw1_pressed = NO;
                  Curr_Time = Time;
-                 P2OUT |= IR_LED;     // turn IR LED ON
-                 event = FIND_BLACK;
+                 sw1_pressed = NO;
+                 strcpy(display_line[0], "          ");
+                 strcpy(display_line[1], "          ");
+                 strcpy(display_line[2], "Baud Rate:");
+                 strcpy(display_line[3], "115,200 Hz");
+                 display_changed = TRUE;
+                 Display_Update(0,0,0,0);    // manually update display before waiting
+
+                 setBaudRate(115200);                        // set our baud rate to 115,200 Hz
+                 while (Time < Curr_Time + 10) {             // 2 second wait before transmit
+                     continue;
+                 }
+                 strncpy(transmit_array, NCSU_array, 10);    // copy our message into transmit array
+                 UCA1IE |= UCTXIE;                           // enable transmit
      }
 }
 
@@ -40,31 +51,21 @@ void Switch2_Process(void){
     //------------------------------------------------------------------------------
     if (sw2_pressed){
                   // SW2 is pressed
+                  Curr_Time = Time;
                   sw2_pressed = NO;
-                  sw2_toggle++;
+                  strcpy(display_line[0], "          ");
+                  strcpy(display_line[1], "          ");
+                  strcpy(display_line[2], "Baud Rate:");
+                  strcpy(display_line[3], "460,800 Hz");
+                  display_changed = TRUE;
+                  Display_Update(0,0,0,0);  // manually update display before waiting
 
-                  if (sw2_toggle == 1){
-                      strcpy(display_line[0], "CALIBRATE ");
-                      strcpy(display_line[1], "IR_LED ON ");
-                      display_changed = TRUE;
-                      P2OUT |= IR_LED;
+                  setBaudRate(460800);
+                  while (Time < Curr_Time + 10) {             // 2 second wait before transmit
+                      continue;
                   }
-                  if (sw2_toggle == 2){
-                      strcpy(display_line[0], "BLACK SET ");
-                      display_changed = TRUE;
-                      BLACK_THRESHOLD = ADC_Left_Detect;
-                  }
-                  if (sw2_toggle == 3){
-                      strcpy(display_line[0], "WHITE SET ");
-                      display_changed = TRUE;
-                      WHITE_THRESHOLD = ADC_Left_Detect;
-                  }
-                  if (sw2_toggle > 3){
-                      strcpy(display_line[0], "   IDLE   ");
-                      strcpy(display_line[1], "          ");
-                      display_changed = TRUE;
-                      P2OUT &= ~IR_LED;
-                      sw2_toggle = 0;
-                  }
+                  strncpy(transmit_array, NCSU_array, 10);    // copy our message into transmit array
+                  UCA1IE |= UCTXIE;                           // enable transmit
+
     }
 }

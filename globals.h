@@ -2,18 +2,13 @@
  * globals.h
  *
  *  Created on: Feb 11, 2025
- *      Author: apcoo
+ *      Author: Akshay Pradhan
  */
 
 #ifndef GLOBALS_H_
 #define GLOBALS_H_
 
-/*
- * globals.c
- *
- *  Created on: Jan 30, 2025
- *      Author: Akshay Pradhan
- */
+#include "macros.h"
 
 volatile char slow_input_down;
 extern char display_line[4][11];
@@ -32,11 +27,31 @@ unsigned int wheel_move;
 char forward;
 
 //------------------------------------------------------------------------------
+// SERIAL
+//------------------------------------------------------------------------------
+
+volatile unsigned int usb_rx_ring_wr;   // This is an index for Writing the character into the array
+volatile unsigned int usb_rx_ring_rd;   // This is an index for Reading the character out of the array
+
+extern long currentBaudRate;            // global current baud rate
+
+char USB_Char_Rx[16];                   // character buffer for USB serial receiving
+char transmit_array[32];                // character array for transmitting data
+extern unsigned int t_index;
+
+extern char NCSU_array[9];
+char process_buffer[4][32];
+int display_row;
+extern unsigned int pb_index_row;
+extern unsigned int pb_index_col;
+
+
+//------------------------------------------------------------------------------
 // SHAPES
 //------------------------------------------------------------------------------
 volatile unsigned int Last_Time_Sequence;     // a variable to identify Time_Sequence has changed
-volatile unsigned int cycle_time;            // is a new time base used to control making shapes
-volatile unsigned int time_change;           // is an identifier that a change has occurred
+volatile unsigned int cycle_time;             // is a new time base used to control making shapes
+volatile unsigned int time_change;            // is an identifier that a change has occurred
 
 extern volatile unsigned char event;
 extern volatile unsigned char state;

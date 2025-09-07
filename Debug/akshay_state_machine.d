@@ -17,6 +17,7 @@ akshay_state_machine.obj: ../clocks.h
 akshay_state_machine.obj: ../display.h
 akshay_state_machine.obj: ../functions.h
 akshay_state_machine.obj: ../globals.h
+akshay_state_machine.obj: ../macros.h
 akshay_state_machine.obj: ../init.h
 akshay_state_machine.obj: ../LCD.h
 akshay_state_machine.obj: ../led.h
@@ -27,6 +28,7 @@ akshay_state_machine.obj: ../timers.h
 akshay_state_machine.obj: ../akshay_state_machine.h
 akshay_state_machine.obj: ../ADC.h
 akshay_state_machine.obj: ../wheels.h
+akshay_state_machine.obj: ../serial.h
 
 ../akshay_state_machine.c:
 
@@ -62,6 +64,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../globals.h:
 
+../macros.h:
+
 ../init.h:
 
 ../LCD.h:
@@ -81,4 +85,6 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 ../ADC.h:
 
 ../wheels.h:
+
+../serial.h:
 

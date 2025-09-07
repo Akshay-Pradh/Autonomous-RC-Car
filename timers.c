@@ -47,14 +47,16 @@ void Init_Timer_B1(void) {
     TB1CTL |= ID__8;                // Divide clock by 8
     TB1EX0 = TBIDEX__8;             // Divide clock by an additional 8
 
-    TB1CCR0 = TB1CCR0_INTERVAL;     // CCR0
+    // dont need these interrupts enabled for homework and project 8 since it is all to do with ADC and Movement
+
+    TB1CCR0 = TB1CCR0_INTERVAL;      // CCR0
     TB1CCTL0 |= CCIE;               // CCR0 enable interrupt
 
-    TB1CCR1 = TB1CCR1_INTERVAL;       // CCR1 enabled (ADC)
-    TB1CCTL1 |= CCIE;               // CCR1 enable interrupt
+    TB1CCR1 = TB1CCR1_INTERVAL;        // CCR1 enabled (ADC)
+    TB1CCTL1 |= CCIE;                 // CCR1 enable interrupt
 
-    TB1CCR2 = TB1CCR2_INTERVAL;      // CCR2 enabled (will eventually write the code to have this timer go on and off)
-    TB1CCTL2 |= CCIE;               // CCR2 enable interrupt
+    TB1CCR2 &= ~TB1CCR2_INTERVAL;     // CCR2 enabled (will eventually write the code to have this timer go on and off)
+    TB1CCTL2 |= CCIE;                // CCR2 enable interrupt
 
     TB1CTL &= ~TBIE;              // Disable Overflow Interrupt
     TB1CTL &= ~TBIFG;             // Clear Overflow Interrupt flag

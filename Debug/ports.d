@@ -17,6 +17,7 @@ ports.obj: ../clocks.h
 ports.obj: ../display.h
 ports.obj: ../functions.h
 ports.obj: ../globals.h
+ports.obj: ../macros.h
 ports.obj: ../init.h
 ports.obj: ../LCD.h
 ports.obj: ../led.h
@@ -27,6 +28,7 @@ ports.obj: ../timers.h
 ports.obj: ../akshay_state_machine.h
 ports.obj: ../ADC.h
 ports.obj: ../wheels.h
+ports.obj: ../serial.h
 
 ../ports.c:
 
@@ -62,6 +64,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../globals.h:
 
+../macros.h:
+
 ../init.h:
 
 ../LCD.h:
@@ -81,4 +85,6 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 ../ADC.h:
 
 ../wheels.h:
+
+../serial.h:
 

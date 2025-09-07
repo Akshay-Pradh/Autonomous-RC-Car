@@ -9,7 +9,7 @@
 
 void Display_Process(void){
   if(update_display){
-    if (TIME_DISPLAY) Display_Time();     // might have to change location later (or add another condition)
+//    if (TIME_DISPLAY) Display_Time();     // might have to change location later (or add another condition)
     update_display = 0;
     if(display_changed){
       display_changed = 0;
