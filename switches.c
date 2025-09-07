@@ -8,6 +8,7 @@
 #include "macros.h"
 
 // Globals
+volatile unsigned int sw1_toggle = 0;
 volatile unsigned int sw2_toggle = 0;
 
 void Switches_Process(void) {
@@ -24,23 +25,24 @@ void Switch1_Process(void){
     // Switch 1 Configurations
     // Port P4 Pin 1
     //------------------------------------------------------------------------------
+
      if (sw1_pressed){
                  // SW1 is pressed
-                 Curr_Time = Time;
                  sw1_pressed = NO;
-                 strcpy(display_line[0], "          ");
-                 strcpy(display_line[1], "          ");
-                 strcpy(display_line[2], "Baud Rate:");
-                 strcpy(display_line[3], "115,200 Hz");
-                 display_changed = TRUE;
-                 Display_Update(0,0,0,0);    // manually update display before waiting
+                 sw1_toggle++;
 
-                 setBaudRate(115200);                        // set our baud rate to 115,200 Hz
-                 while (Time < Curr_Time + 10) {             // 2 second wait before transmit
-                     continue;
+                 if (sw1_toggle == 1) {
+                    strcpy(display_line[2], "115,200 Hz");
+                    display_changed = TRUE;
+                    setBaudRate(115200);                        // set our baud rate to 115,200 Hz
+
                  }
-                 strncpy(transmit_array, NCSU_array, 10);    // copy our message into transmit array
-                 UCA1IE |= UCTXIE;                           // enable transmit
+                 else if (sw1_toggle == 2) {
+                    strcpy(display_line[2], "460,800 Hz");
+                    display_changed = TRUE;
+                    setBaudRate(460800);                        // set our baud rate to 460,800 Hz
+                 }
+                 else sw1_toggle = 0;
      }
 }
 
@@ -51,21 +53,14 @@ void Switch2_Process(void){
     //------------------------------------------------------------------------------
     if (sw2_pressed){
                   // SW2 is pressed
-                  Curr_Time = Time;
                   sw2_pressed = NO;
-                  strcpy(display_line[0], "          ");
-                  strcpy(display_line[1], "          ");
-                  strcpy(display_line[2], "Baud Rate:");
-                  strcpy(display_line[3], "460,800 Hz");
-                  display_changed = TRUE;
-                  Display_Update(0,0,0,0);  // manually update display before waiting
-
-                  setBaudRate(460800);
-                  while (Time < Curr_Time + 10) {             // 2 second wait before transmit
-                      continue;
+                  if (message_status == RECEIVED) {
+                      message_status = TRANSMIT;    // change the message status to TRANSMIT
+                      UCA0IE |= UCTXIE;           // enable the transmit array to send characters back to the AD3
                   }
-                  strncpy(transmit_array, NCSU_array, 10);    // copy our message into transmit array
-                  UCA1IE |= UCTXIE;                           // enable transmit
+                  // need to send the message back to the AD3 if we are in the correct state (maybe a received flag)
+                  // we can enable the transmit and then disable it after
+
 
     }
 }

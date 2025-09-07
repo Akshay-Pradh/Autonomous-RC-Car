@@ -30,14 +30,21 @@ char forward;
 // SERIAL
 //------------------------------------------------------------------------------
 
-volatile unsigned int usb_rx_ring_wr;   // This is an index for Writing the character into the array
-volatile unsigned int usb_rx_ring_rd;   // This is an index for Reading the character out of the array
+volatile unsigned int usb_rx_ring_wr;   // This is an index for Writing the character into the usb ring buffer
+volatile unsigned int usb_rx_ring_rd;   // This is an index for Reading the character out of the usb ring buffer
+
+volatile unsigned int iot_rx_ring_wr;   // This is an index for Writing the character into the iot ring buffer
+volatile unsigned int iot_rx_ring_rd;   // This is an index for Reading the characer out of the iot ring buffer
 
 extern long currentBaudRate;            // global current baud rate
 
-char USB_Char_Rx[16];                   // character buffer for USB serial receiving
+char USB_Char_Rx[16];                   // character ring buffer for USB serial receiving
+char IOT_Char_Rx[16];                   // character ring buffer for IOT serial receiving
+
 char transmit_array[32];                // character array for transmitting data
 extern unsigned int t_index;
+
+extern char message_status;             // message status for PROJECT08
 
 extern char NCSU_array[9];
 char process_buffer[4][32];

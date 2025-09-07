@@ -45,6 +45,12 @@
 #define ROWS    (4)
 #define COLUMNS (32)
 
+// message STATUS
+#define RECEIVED    ('R')
+#define TRANSMIT    ('T')
+#define TRANSMITTED ('D')
+#define COMPLETE    ('C')
+
 // SWITCHES ====================================================================
 #define DEBOUNCE_THRESHOLD  (4)
 #define YES                 (1)
