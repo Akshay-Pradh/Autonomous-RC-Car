@@ -42,6 +42,8 @@ void main(void){
   wheel_move = 0;
   forward = TRUE;
 
+//  wheelsReverse();
+
 //------------------------------------------------------------------------------
 // Begining of the "While" Operating System
 //------------------------------------------------------------------------------
@@ -50,6 +52,8 @@ void main(void){
     Switches_Process();                // Check for switch state change
     Display_Process();                 // Update Display
     P3OUT ^= TEST_PROBE;               // Change State of TEST_PROBE OFF
+
+    wheelsForward();
   }
 //------------------------------------------------------------------------------
 

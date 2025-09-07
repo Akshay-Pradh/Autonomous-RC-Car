@@ -12,6 +12,9 @@ void Init_Port_4(void);
 void Init_Port_5(void);
 void Init_Port_6(void);
 
+void wheelsForward(void);
+void wheelsReverse(void);
+
 #define FALSE                  (0x00) //
 #define TRUE                   (0x01) //
 #define MOTOR                  (0x00) //
