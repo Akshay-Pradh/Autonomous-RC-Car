@@ -330,13 +330,23 @@ void Init_Ports(void) {
     Init_Port_6();    // Initialize Port 6
 }
 
-void wheelsForward(void) {
-    P6OUT |= L_FORWARD;
+void Forward_On(void) {
     P6OUT |= R_FORWARD;
+    P6OUT |= L_FORWARD;
 }
 
-void wheelsReverse(void) {
-    P6OUT |= L_REVERSE;
+void Forward_Off(void) {
+    P6OUT &= ~R_FORWARD;
+    P6OUT &= ~L_FORWARD;
+}
+
+void Reverse_On(void) {
     P6OUT |= R_REVERSE;
+    P6OUT |= L_REVERSE;
+}
+
+void Reverse_Off(void) {
+    P6OUT &= ~R_REVERSE;
+    P6OUT &= ~L_REVERSE;
 }
 

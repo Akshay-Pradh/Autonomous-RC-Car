@@ -16,12 +16,14 @@ led.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xloca
 led.obj: ../clocks.h
 led.obj: ../display.h
 led.obj: ../functions.h
-led.obj: ../globals.c
+led.obj: ../globals.h
 led.obj: ../init.h
 led.obj: ../LCD.h
 led.obj: ../led.h
 led.obj: ../ports.h
 led.obj: ../system.h
+led.obj: ../switches.h
+led.obj: ../shapes.h
 
 ../led.c:
 
@@ -55,7 +57,7 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../functions.h:
 
-../globals.c:
+../globals.h:
 
 ../init.h:
 
@@ -66,4 +68,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 ../ports.h:
 
 ../system.h:
+
+../switches.h:
+
+../shapes.h:
 

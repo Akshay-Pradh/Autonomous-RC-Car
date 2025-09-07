@@ -16,12 +16,14 @@ ports.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlo
 ports.obj: ../clocks.h
 ports.obj: ../display.h
 ports.obj: ../functions.h
-ports.obj: ../globals.c
+ports.obj: ../globals.h
 ports.obj: ../init.h
 ports.obj: ../LCD.h
 ports.obj: ../led.h
 ports.obj: ../ports.h
 ports.obj: ../system.h
+ports.obj: ../switches.h
+ports.obj: ../shapes.h
 
 ../ports.c:
 
@@ -55,7 +57,7 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../functions.h:
 
-../globals.c:
+../globals.h:
 
 ../init.h:
 
@@ -66,4 +68,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 ../ports.h:
 
 ../system.h:
+
+../switches.h:
+
+../shapes.h:
 

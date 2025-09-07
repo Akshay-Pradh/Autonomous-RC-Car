@@ -29,9 +29,9 @@ void main(void){
   Init_Conditions();                   // Initialize Variables and Initial Conditions
   Init_Timers();                       // Initialize Timers
   Init_LCD();                          // Initialize LCD
-//P2OUT &= ~RESET_LCD;
+  //P2OUT &= ~RESET_LCD;
   // Place the contents of what you want on the display, in between the quotes
-// Limited to 10 characters per line
+  // Limited to 10 characters per line
   strcpy(display_line[0], "   NCSU   ");
   strcpy(display_line[1], " WOLFPACK ");
   strcpy(display_line[2], "  ECE306  ");
@@ -39,13 +39,13 @@ void main(void){
   display_changed = TRUE;
 //  Display_Update(0,0,0,0);
 
+  // Defaults:
   wheel_move = 0;
   forward = TRUE;
-
-//  wheelsReverse();
+  event = NONE;
 
 //------------------------------------------------------------------------------
-// Begining of the "While" Operating System
+// Beginning of the "While" Operating System
 //------------------------------------------------------------------------------
   while(ALWAYS) {                      // Can the Operating system run
     Carlson_StateMachine();            // Run a Time Based State Machine
@@ -53,7 +53,29 @@ void main(void){
     Display_Process();                 // Update Display
     P3OUT ^= TEST_PROBE;               // Change State of TEST_PROBE OFF
 
-    wheelsForward();
+    // Creating a time value
+    if(Last_Time_Sequence != Time_Sequence){
+        Last_Time_Sequence = Time_Sequence;
+        cycle_time++;
+        time_change = 1;
+    }
+
+    // Calling State Machine for SHAPES
+    switch(event){
+        case  STRAIGHT:                    // Straight
+            Run_Straight();
+            break;                             //
+        case  CIRCLE:                      // Circle
+            Run_Circle();
+            break;                             //
+        case FIG8:                         // Figure-8
+            Run_Fig8();
+            break;                             //
+        case TRIANGLE:                   // Triangle
+            Run_Triangle();
+            break;                             //
+        default: break;
+    }
   }
 //------------------------------------------------------------------------------
 

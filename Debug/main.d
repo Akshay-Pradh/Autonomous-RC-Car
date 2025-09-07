@@ -16,12 +16,14 @@ main.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xloc
 main.obj: ../clocks.h
 main.obj: ../display.h
 main.obj: ../functions.h
-main.obj: ../globals.c
+main.obj: ../globals.h
 main.obj: ../init.h
 main.obj: ../LCD.h
 main.obj: ../led.h
 main.obj: ../ports.h
 main.obj: ../system.h
+main.obj: ../switches.h
+main.obj: ../shapes.h
 
 ../main.c:
 
@@ -55,7 +57,7 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../functions.h:
 
-../globals.c:
+../globals.h:
 
 ../init.h:
 
@@ -66,4 +68,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 ../ports.h:
 
 ../system.h:
+
+../switches.h:
+
+../shapes.h:
 
