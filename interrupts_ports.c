@@ -23,6 +23,9 @@ __interrupt void switchP4_interrupt(void){
         TB0CCR1 = TB0R + DEBOUNCE_INTERVAL;     // Add Interval to TB0R for TB0CCR1
         TB0CCTL1 |= CCIE;                       // Enable TimerB0_1
 
+        P6OUT &= ~LCD_BACKLITE;  // Turn off LCD_BACKLITE
+        TB0CCTL0 &= ~CCIE;       // Disable TimerB0_0 (stop LCD blinking)
+
         sw1_pressed = YES;      // change sw1_pressed global to YES
     }
 }
@@ -39,6 +42,9 @@ __interrupt void switchP2_interrupt(void){
 
         TB0CCR2 = TB0R + DEBOUNCE_INTERVAL;     // Add Interval to TB0R for TB0CCR2
         TB0CCTL2 |= CCIE;                       // Enable TimerB0_2
+
+        P6OUT &= ~LCD_BACKLITE;  // Turn off LCD_BACKLITE
+        TB0CCTL0 &= ~CCIE;       // Disable TimerB0_0 (stop LCD blinking)
 
         sw2_pressed = YES;      // change sw2_pressed global to YES
     }

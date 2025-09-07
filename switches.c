@@ -26,12 +26,11 @@ void Switch1_Process(void){
      if (sw1_pressed){
                  // SW1 is pressed
                  sw1_pressed = NO;
-                 strcpy(display_line[0], " STARTING ");
-                 strcpy(display_line[1], " MOVEMENT ");
-                 strcpy(display_line[2], " SEQUENCE ");
+                 strcpy(display_line[0], "  SWITCH  ");
+                 strcpy(display_line[1], "    1     ");
+                 strcpy(display_line[2], "          ");
                  strcpy(display_line[3], "  ECE306  ");
                  display_changed = TRUE;
-                 event = MOVEMENT_1;
      }
 }
 

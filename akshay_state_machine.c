@@ -212,7 +212,6 @@ void spinclock(void){
     strcpy(display_line[3], "          ");
     display_changed = TRUE;
     P6OUT |= L_FORWARD;
-    P6OUT |= R_REVERSE;
     state = STOP;
 }
 void spincounterclock(void){
@@ -222,6 +221,5 @@ void spincounterclock(void){
     strcpy(display_line[3], "CLOCKWISE ");
     display_changed = TRUE;
     P6OUT |= R_FORWARD;
-    P6OUT |= L_REVERSE;
     state = STOP;
 }

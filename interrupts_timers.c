@@ -12,8 +12,8 @@ __interrupt void Timer0_B0_ISR(void){
      //---------------------------------------------------------------------------
      // TimerB0 0 Interrupt handler
      //---------------------------------------------------------------------------
-     Time++;
      update_display = TRUE;
+     P6OUT ^= LCD_BACKLITE;      // Toggle LCD_BACKLITE
      TB0CCR0 += TB0CCR0_INTERVAL;
      // Add Offset to TBCCR0
      //---------------------------------------------------------------------------
@@ -35,6 +35,7 @@ __interrupt void TIMER0_B1_ISR(void){
                     debounce_in_progress_sw1 = NO;
                     P4IE |= SW1;        // re-enable SW1 interrupt
                     TB0CCTL1 &= ~CCIE;  // disable debounce timer
+                    TB0CCTL0 |= CCIE;   // re-enable TimerB0_0 (continue LCD blinking)
                 }
             }
             break;
@@ -46,6 +47,7 @@ __interrupt void TIMER0_B1_ISR(void){
                     debounce_in_progress_sw2 = NO;
                     P2IE |= SW2;        // re-enable SW1 interrupt
                     TB0CCTL2 &= ~CCIE;  // disable debounce timer
+                    TB0CCTL0 |= CCIE;   // re-enable TimerB0_0 (continue LCD blinking)
                 }
             }
             break;

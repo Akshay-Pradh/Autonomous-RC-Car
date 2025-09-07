@@ -41,6 +41,7 @@
 #define NO                  (0)
 
 // PROJECT 05 MOVEMENTS ========================================================
+
 #define MOVEMENT_1            (0x00)
 #define MOVEMENT_2            (0x01)
 #define MOVEMENT_3            (0x02)
@@ -55,6 +56,7 @@
 #define SPIN_CLOCK            ('S')
 #define SPIN_COUNTERCLOCK     ('C')
 #define STOP                  ('T')
+
 
 
 // SHAPE STATES ================================================================
