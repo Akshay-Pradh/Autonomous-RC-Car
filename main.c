@@ -10,9 +10,9 @@
 //------------------------------------------------------------------------------
 #include  "msp430.h"
 #include  <string.h>
-#include  "include\functions.h"
-#include  "Include\LCD.h"
-#include  "include\ports.h"
+#include  "functions.h"
+#include  "LCD.h"
+#include  "ports.h"
 
 #define ALWAYS                  (1)
 #define RESET_STATE             (0)

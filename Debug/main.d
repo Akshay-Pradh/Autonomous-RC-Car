@@ -12,9 +12,9 @@ main.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/_ti_
 main.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/linkage.h
 main.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/sys/cdefs.h
 main.obj: C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_string.h
-main.obj: ../include/functions.h
-main.obj: ../Include/LCD.h
-main.obj: ../include/ports.h
+main.obj: ../functions.h
+main.obj: ../LCD.h
+main.obj: ../ports.h
 
 ../main.c:
 
@@ -40,9 +40,9 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/sys/cdefs.h:
 
 C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_string.h:
 
-../include/functions.h:
+../functions.h:
 
-../Include/LCD.h:
+../LCD.h:
 
-../include/ports.h:
+../ports.h:
 
