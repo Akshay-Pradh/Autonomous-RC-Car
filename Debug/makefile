@@ -10,12 +10,16 @@ GEN_OPTS__FLAG :=
 GEN_CMDS__FLAG := 
 
 ORDERED_OBJS += \
+"./clocks.obj" \
+"./display.obj" \
+"./globals.obj" \
+"./init.obj" \
+"./led.obj" \
 "./main.obj" \
+"./ports.obj" \
+"./system.obj" \
 "../Compiled/LCD.obj" \
-"../Compiled/clocks.obj" \
-"../Compiled/ports.obj" \
 "../Compiled/switches.obj" \
-"../Compiled/system.obj" \
 "../Compiled/timersB0.obj" \
 "../lnk_msp430fr2355.cmd" \
 $(GEN_CMDS__FLAG) \
@@ -129,29 +133,29 @@ endif
 
 # Add inputs and outputs from these tool invocations to the build variables 
 EXE_OUTPUTS += \
-Project\ 2\ cc.out \
+Homework03.out 
 
 EXE_OUTPUTS__QUOTED += \
-"Project 2 cc.out" \
+"Homework03.out" 
 
 
 # All Target
 all: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
-	@$(MAKE) --no-print-directory -Onone "Project 2 cc.out"
+	@$(MAKE) --no-print-directory -Onone "Homework03.out"
 
 # Tool invocations
-Project\ 2\ cc.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
+Homework03.out: $(OBJS) $(CMD_SRCS) $(GEN_CMDS)
 	@echo 'Building target: "$@"'
 	@echo 'Invoking: MSP430 Linker'
-	"C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/bin/cl430" -vmspx --use_hw_mpy=F5 --advice:power=all --advice:hw_config=all --define=__MSP430FR2355__ --define=_FRWP_ENABLE --define=_INFO_FRWP_ENABLE -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"Project 2 cc.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"C:/ti/ccs1230/ccs/ccs_base/msp430/include" -i"C:/ti/ccs1230/ccs/ccs_base/msp430/lib/FR2xx" -i"C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib" -i"C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include" --priority --reread_libs --define=_FRWP_ENABLE --define=_INFO_FRWP_ENABLE --diag_wrap=off --display_error_number --warn_sections --xml_link_info="Project 2 cc_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "Project 2 cc.out" $(ORDERED_OBJS)
+	"C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/bin/cl430" -vmspx --use_hw_mpy=F5 --advice:power=all --advice:hw_config=all --define=__MSP430FR2355__ --define=_FRWP_ENABLE --define=_INFO_FRWP_ENABLE -g --printf_support=minimal --diag_warning=225 --diag_wrap=off --display_error_number --silicon_errata=CPU21 --silicon_errata=CPU22 --silicon_errata=CPU40 -z -m"Homework03.map" --heap_size=160 --stack_size=160 --cinit_hold_wdt=on -i"C:/ti/ccs1230/ccs/ccs_base/msp430/include" -i"C:/ti/ccs1230/ccs/ccs_base/msp430/lib/FR2xx" -i"C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/lib" -i"C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include" --priority --reread_libs --define=_FRWP_ENABLE --define=_INFO_FRWP_ENABLE --diag_wrap=off --display_error_number --warn_sections --xml_link_info="Homework03_linkInfo.xml" --use_hw_mpy=F5 --rom_model -o "Homework03.out" $(ORDERED_OBJS)
 	@echo 'Finished building target: "$@"'
 	@echo ' '
 
 # Other Targets
 clean:
 	-$(RM) $(EXE_OUTPUTS__QUOTED)
-	-$(RM) "main.obj" 
-	-$(RM) "main.d" 
+	-$(RM) "clocks.obj" "display.obj" "globals.obj" "init.obj" "led.obj" "main.obj" "ports.obj" "system.obj" 
+	-$(RM) "clocks.d" "display.d" "globals.d" "init.d" "led.d" "main.d" "ports.d" "system.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

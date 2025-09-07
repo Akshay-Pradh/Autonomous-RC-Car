@@ -9,21 +9,63 @@ CMD_SRCS += \
 ../lnk_msp430fr2355.cmd 
 
 C_SRCS += \
-../main.c 
+../clocks.c \
+../display.c \
+../globals.c \
+../init.c \
+../led.c \
+../main.c \
+../ports.c \
+../system.c 
 
 C_DEPS += \
-./main.d 
+./clocks.d \
+./display.d \
+./globals.d \
+./init.d \
+./led.d \
+./main.d \
+./ports.d \
+./system.d 
 
 OBJS += \
-./main.obj 
+./clocks.obj \
+./display.obj \
+./globals.obj \
+./init.obj \
+./led.obj \
+./main.obj \
+./ports.obj \
+./system.obj 
 
 OBJS__QUOTED += \
-"main.obj" 
+"clocks.obj" \
+"display.obj" \
+"globals.obj" \
+"init.obj" \
+"led.obj" \
+"main.obj" \
+"ports.obj" \
+"system.obj" 
 
 C_DEPS__QUOTED += \
-"main.d" 
+"clocks.d" \
+"display.d" \
+"globals.d" \
+"init.d" \
+"led.d" \
+"main.d" \
+"ports.d" \
+"system.d" 
 
 C_SRCS__QUOTED += \
-"../main.c" 
+"../clocks.c" \
+"../display.c" \
+"../globals.c" \
+"../init.c" \
+"../led.c" \
+"../main.c" \
+"../ports.c" \
+"../system.c" 
 
 

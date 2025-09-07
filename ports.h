@@ -1,3 +1,17 @@
+/*
+ * ports.c
+ *
+ *  Created on: Jan 29, 2025
+ *      Author: Akshay Pradhan
+ */
+void Init_Ports(void);
+void Init_Port_1(void);
+void Init_Port_2(void);
+void Init_Port_3(void);
+void Init_Port_4(void);
+void Init_Port_5(void);
+void Init_Port_6(void);
+
 #define FALSE                  (0x00) //
 #define TRUE                   (0x01) //
 #define MOTOR                  (0x00) //
@@ -18,7 +32,7 @@
 
 // Port 1 Pins
 #define RED_LED                (0x01) // 1.0 RED LED 0
-#define V_A1_SEEED             (0x02) // 1.1 A1_SEEED
+#define A1_SEEED               (0x02) // 1.1 A1_SEEED
 #define V_DETECT_L             (0x04) // 1.2 V_DETECT_L
 #define V_DETECT_R             (0x08) // 1.3 V_DETECT_R
 #define V_A4_SEEED             (0x10) // 1.4 A4_SEEED
@@ -27,14 +41,14 @@
 #define UCA0TXD                (0x80) // 1.7 Back Channel UCA0TXD
 
 // Port 2 Pins
-#define RESET_LCD              (0x01) // 2.0 LCD Reset
+#define SLOW_CLK               (0x01) // 2.0 SLOW_CLK
 #define CHECK_BAT              (0x02) // 2.1 CHECK_BAT
 #define IR_LED                 (0x04) // 2.2 IR LED
 #define SW2                    (0x08) // 2.3 SW2
-#define IOT_RUN_RED            (0x10) // 2.4 IOT_RUN_RED
+#define IOT_RUN_CPU            (0x10) // 2.4 IOT_RUN_RED
 #define DAC_ENB                (0x20) // 2.5 DAC_ENB
-#define LFXOUT                 (0x40) // 2.6 XOUTR
-#define LFXIN                  (0x80) // 2.7 XINR
+#define LFXOUT                 (0x40) // 2.6 XOUT
+#define LFXIN                  (0x80) // 2.7 XIN
 
 // Port 3 Pins
 #define TEST_PROBE             (0x01) // 3.0 TEST PROBE
@@ -42,12 +56,12 @@
 #define OA2N                   (0x04) // 3.2 Photodiode Circuit
 #define OA2P                   (0x08) // 3.3 Photodiode Circuit
 #define SMCLK_OUT              (0x10) // 3.4 SMCLK
-#define DAC_CNTL               (0x20) // 3.5 DAC_CNTL
-#define IOT_LINK_GRN           (0x40) // 3.6 IOT_LINK_GRN
-#define IOT_EN                 (0x80) // 3.7 IOT_EN              1
+#define DAC_CTRL               (0x20) // 3.5 DAC_CTRLL
+#define IOT_LINK_CPU           (0x40) // 3.6 IOT_LINK_CPU
+#define IOT_RN_CPU             (0x80) // 3.7 IOT_RN_CPU              1
 
 // Port 4 Pins
-#define DAC_CNTL1              (0x01) // 4.0 DAC_CNTL1
+#define RESET_LCD              (0x01) // 4.0 RESET_LCD
 #define SW1                    (0x02) // 4.1 SW1
 #define UCA1RXD                (0x04) // 4.2 Back Channel UCA1RXD
 #define UCA1TXD                (0x08) // 4.3 Back Channel UCA1TXD
@@ -57,17 +71,18 @@
 #define UCB1SOMI               (0x80) // 4.7 UCB1SOMI
 
 // Port 5 Pins
-#define V_BAT                  (0x01) // 5.1 V_BAT
-#define V_5_0                  (0x02) // 5.0 V_5_0
+#define V_BAT                  (0x01) // 5.0 V_BAT
+#define V_5_0                  (0x02) // 5.1 V_5_0
 #define V_DAC                  (0x04) // 5.2 V_DAC
 #define V_3_3                  (0x08) // 5.3 V_3_3
-#define IOT_BOOT               (0x10) // 5.4 IOT_BOOT           1
+#define IOT_BOOT_CPU           (0x10) // 5.4 IOT_BOOT_CPU           1
 
 // Port 6 Pins
-#define LCD_BACKLITE           (0x01) // 6.4 LCD_BACKLITE
-#define R_FORWARD              (0x02) // 6.0 P6_0_PWM
-#define R_REVERSE              (0x04) // 6.1 P6_1_PWM
-#define L_FORWARD              (0x08) // 6.2 P6_2_PWM
-#define L_REVERSE              (0x10) // 6.3 P6_3_PWM
+#define LCD_BACKLITE           (0x01) // 6.0 LCD_BACKLITE
+#define R_FORWARD              (0x02) // 6.1 P6_0_PWM
+#define R_REVERSE              (0x04) // 6.2 P6_1_PWM
+#define L_FORWARD              (0x08) // 6.3 P6_2_PWM
+#define L_REVERSE              (0x10) // 6.4 P6_3_PWM
 #define P6_5                   (0x20) // 6.5
 #define GRN_LED                (0x40) // 6.6 GREEN LED
+
