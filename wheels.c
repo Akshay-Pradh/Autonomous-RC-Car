@@ -10,6 +10,8 @@
 // Globals
 unsigned char wheel_event = IDLE;
 unsigned char config = NONE;
+unsigned int BLACK_THRESHOLD = 500;
+unsigned int WHITE_THRESHOLD = 200;
 
 void Wheels_Process(void){
     switch(wheel_event) {
@@ -56,9 +58,13 @@ void Wheels_Process(void){
                     LEFT_FORWARD_SPEED = TARGET_SPEED_LEFT;   // in case of overshoot when adding speed_step
                 }
             }
+            // forward_off()
             if (TARGET_SPEED_RIGHT == WHEEL_OFF && TARGET_SPEED_LEFT == WHEEL_OFF) {
                 wheel_event = INITIATE_STOP;
             }
+            // dropping to a lower speed
+            if (RIGHT_FORWARD_SPEED > TARGET_SPEED_RIGHT) RIGHT_FORWARD_SPEED = TARGET_SPEED_RIGHT;
+            if (LEFT_FORWARD_SPEED > TARGET_SPEED_LEFT) LEFT_FORWARD_SPEED = TARGET_SPEED_LEFT;
             break;
 
         case REVERSE_MOVE_START:       // Move Reverse Start
@@ -84,9 +90,13 @@ void Wheels_Process(void){
                     LEFT_REVERSE_SPEED = TARGET_SPEED_LEFT;   // in case of overshoot when adding speed_step
                 }
             }
+            // reverse_off()
             if (TARGET_SPEED_RIGHT == WHEEL_OFF && TARGET_SPEED_LEFT == WHEEL_OFF) {
                 wheel_event = INITIATE_STOP;
             }
+            // dropping to a lower speed
+            if (RIGHT_REVERSE_SPEED > TARGET_SPEED_RIGHT) RIGHT_REVERSE_SPEED = TARGET_SPEED_RIGHT;
+            if (LEFT_REVERSE_SPEED > TARGET_SPEED_LEFT) LEFT_REVERSE_SPEED = TARGET_SPEED_LEFT;
             break;
 
         case SPIN_MOVE_START:       // Begin Spin Process
@@ -136,4 +146,64 @@ void Wheels_Process(void){
     }
 }
 
+
+void Motors_Off(void) {
+    wheel_event = INITIATE_STOP;
+}
+
+void Forward_On(void) {
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = FORWARD_C;
+    TARGET_SPEED_LEFT = SLOW_L;
+    TARGET_SPEED_RIGHT = SLOW_R;
+}
+
+void Forward_Off(void) {
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = FORWARD_C;
+    TARGET_SPEED_LEFT = WHEEL_OFF;
+    TARGET_SPEED_RIGHT = WHEEL_OFF;
+}
+
+void Reverse_On(void) {
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = REVERSE_C;
+    TARGET_SPEED_LEFT = SLOW_L;
+    TARGET_SPEED_RIGHT = SLOW_R;
+}
+
+void Reverse_Off(void) {
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = REVERSE_C;
+    TARGET_SPEED_LEFT = WHEEL_OFF;
+    TARGET_SPEED_RIGHT = WHEEL_OFF;
+}
+
+void Spin_Clock(void) {
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = SPIN;
+    TARGET_SPEED_LEFT = SLOWER;
+    TARGET_SPEED_RIGHT = SLOWER;
+}
+
+void Circle_Path(void) {
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = FORWARD_C;
+    TARGET_SPEED_LEFT = CIRCLE_SLOW;     // testing speeds for circle path
+    TARGET_SPEED_RIGHT = CIRCLE_SLOWER;
+}
+
+void Circle_Adjust_IN(void) {
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = FORWARD_C;
+    TARGET_SPEED_LEFT = WHEEL_OFF;
+    TARGET_SPEED_RIGHT = CIRCLE_ADJ;
+}
+
+void Circle_Adjust_OUT(void){
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = FORWARD_C;
+    TARGET_SPEED_LEFT = CIRCLE_ADJ;
+    TARGET_SPEED_RIGHT = WHEEL_OFF;
+}
 

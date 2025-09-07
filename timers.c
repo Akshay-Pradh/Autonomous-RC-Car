@@ -8,8 +8,10 @@
 #include "macros.h"
 
 // Globals
-volatile unsigned int Time = 0;         // time measurement (every 200ms)
-volatile unsigned int Curr_Time = 0;    // current time measurement
+volatile unsigned int Time = 0;             // time measurement (every 200ms)
+volatile unsigned int Time_Precise = 0;     // time measurement (every 50ms)
+volatile unsigned int Curr_Time = 0;        // current time measurement
+unsigned char TIME_DISPLAY = FALSE;         // initialize display timer to false
 
 //-------------------------------------------------------------------------------
 // Timer B0 initialization sets up both B0_0, B0_1-B0_2 and overflow
@@ -48,11 +50,11 @@ void Init_Timer_B1(void) {
     TB1CCR0 = TB1CCR0_INTERVAL;     // CCR0
     TB1CCTL0 |= CCIE;               // CCR0 enable interrupt
 
-    TB1CCR1 = TB1CCR1_INTERVAL;       // CCR1 initially disabled
-    TB1CCTL1 |= CCIE;               // CCR1 disable interrupt
+    TB1CCR1 = TB1CCR1_INTERVAL;       // CCR1 enabled (ADC)
+    TB1CCTL1 |= CCIE;               // CCR1 enable interrupt
 
-    TB1CCR2 = 0;                     // CCR2 initially disabled
-    TB1CCTL2 &= ~CCIE;               // CCR2 disable interrupt
+    TB1CCR2 = TB1CCR2_INTERVAL;      // CCR2 enabled (will eventually write the code to have this timer go on and off)
+    TB1CCTL2 |= CCIE;               // CCR2 enable interrupt
 
     TB1CTL &= ~TBIE;              // Disable Overflow Interrupt
     TB1CTL &= ~TBIFG;             // Clear Overflow Interrupt flag
@@ -98,4 +100,63 @@ void Init_Timers(void) {
     Init_Timer_B1();
     Init_Timer_B3();
 }
+
+void Display_Time(void) {
+
+    unsigned int time_val = Time - START_TIME;
+    char time_char[5];
+    unsigned int value = 0;
+    unsigned int i;
+
+    // populate array with 0's
+    for(i = 0; i < 5; i++) {
+        time_char[i] = '0';
+    }
+
+    // set decimal point
+    time_char[3] = '.';
+
+    // 999.8sec = 4999
+    if (time_val > 4999) {
+        return;
+    }
+
+    // 100.0sec - 999.8sec ------> 500 - 4999
+    while (time_val >= 500) {
+        time_val = time_val - 500;
+        value += 1;
+    }
+    time_char[0] = 0x30 + value;
+    value = 0;
+
+    // 10.0sec - 100.0sec -------> 50 - 500
+    while (time_val >= 50) {
+        time_val = time_val - 50;
+        value += 1;
+    }
+    time_char[1] = 0x30 + value;
+    value = 0;
+
+    // 1.0sec - 10.0sec ------> 5.0 - 50.0
+    while (time_val >= 5) {
+        time_val = time_val - 5;
+        value += 1;
+    }
+    time_char[2] = 0x30 + value;
+    value = 0;
+
+    // 0sec - 1.0sec ------> 0 - 5.0
+    time_char[4] = 0x30 + (time_val * 2);
+
+    // display the string
+    strcpy(display_line[1], "Time:     ");      // empty line 1
+    display_changed = TRUE;
+
+    unsigned int j;
+    for (j = 5; j < 10; j++) {
+        display_line[1][j] = time_char[j - 5];
+    }
+
+}
+//------------------------------------------------------------------------------
 

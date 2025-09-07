@@ -27,10 +27,8 @@ void Switch1_Process(void){
      if (sw1_pressed){
                  // SW1 is pressed
                  sw1_pressed = NO;
-                 strcpy(display_line[0], " FINDING  ");
-                 strcpy(display_line[1], " BLK LINE ");
-                 display_changed = TRUE;
                  Curr_Time = Time;
+                 P2OUT |= IR_LED;     // turn IR LED ON
                  event = FIND_BLACK;
      }
 }
@@ -46,18 +44,27 @@ void Switch2_Process(void){
                   sw2_toggle++;
 
                   if (sw2_toggle == 1){
-                      strcpy(display_line[0], " EMMITER  ");
-                      strcpy(display_line[1], "    ON    ");
+                      strcpy(display_line[0], "CALIBRATE ");
+                      strcpy(display_line[1], "IR_LED ON ");
                       display_changed = TRUE;
-                      P2OUT |= IR_LED;          // Enable Emitter
+                      P2OUT |= IR_LED;
                   }
                   if (sw2_toggle == 2){
-                      strcpy(display_line[0], " EMMITER  ");
-                      strcpy(display_line[1], "    OFF    ");
+                      strcpy(display_line[0], "BLACK SET ");
                       display_changed = TRUE;
-                      P2OUT &= ~IR_LED;        // Disable Emitter
+                      BLACK_THRESHOLD = ADC_Left_Detect;
                   }
-                  if (sw2_toggle >= 3) sw2_toggle = 0;
+                  if (sw2_toggle == 3){
+                      strcpy(display_line[0], "WHITE SET ");
+                      display_changed = TRUE;
+                      WHITE_THRESHOLD = ADC_Left_Detect;
+                  }
+                  if (sw2_toggle > 3){
+                      strcpy(display_line[0], "   IDLE   ");
+                      strcpy(display_line[1], "          ");
+                      display_changed = TRUE;
+                      P2OUT &= ~IR_LED;
+                      sw2_toggle = 0;
+                  }
     }
 }
-

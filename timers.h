@@ -14,4 +14,6 @@ void Init_Timer_B1(void);
 void Init_Timer_B2(void);
 void Init_Timer_B3(void);
 
+void Display_Time(void);
+
 #endif /* TIMERS_H_ */

@@ -7,6 +7,8 @@
 
 #include "macros.h"
 
+unsigned char DISPLAY_TIME = 0x00;
+
 //-------------------------------------------------------------------------------
 //                                  TIMER 0
 //-------------------------------------------------------------------------------
@@ -89,6 +91,8 @@ __interrupt void Timer_B1_CCR1_2_OV_VECTOR_ISR(void){
             TB1CCR1 += TB1CCR1_INTERVAL;
             break;
         case  4:
+            Time_Precise++;
+            TB1CCR2 += TB1CCR2_INTERVAL;
             break;
         case 14:
             // overflow

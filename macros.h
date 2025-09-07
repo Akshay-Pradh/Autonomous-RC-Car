@@ -70,6 +70,7 @@
 #define TIMER_B1_CCR1_2_OV_VECTOR    TIMER1_B1_VECTOR
 #define TB1CCR0_INTERVAL    (1250)      // 8,000,000 / 8 / 8 / (1 / 10msec)
 #define TB1CCR1_INTERVAL    (31250)     // 8,000,000 / 8 / 8 / (1 / 250msec)
+#define TB1CCR2_INTERVAL    (6250)      // 8,000,000 / 8 / 8 / (1 / 50msec)
 
 // Timer B2
 #define TIMER_B2_CCR0_VECTOR         TIMER2_B0_VECTOR
@@ -90,9 +91,18 @@
 #define SPEED_STEP      (1000)
 #define WHEEL_PERIOD    (50005)
 #define WHEEL_OFF       (0)
-#define SLOW            (20000)
+
+#define SLOW_R          (18000)
+#define SLOW_L          (20000)
 #define SLOWER          (10000)
 #define FAST            (50000)
+
+// need to mess around with these
+
+#define CIRCLE_SLOW     (15000)
+#define CIRCLE_SLOWER   (10000)
+#define CIRCLE_ADJ      (7000)
+
 #define PERCENT_100     (50000)
 #define PERCENT_80      (40000)
 
@@ -115,14 +125,23 @@
 #define SPIN                        ('S')
 #define OFF                         ('O')
 
-// PROJECT06_STATE_MACHINE =====================================================
+
+// PROJECT07_STATE_MACHINE =====================================================
 
 // events
 #define IDLE            ('I')
 #define FIND_BLACK      ('F')
 #define FOUND_BLACK     ('B')
-#define LONG_STOP       ('L')
+#define STOP            ('T')
 #define ORIENT_BLACK    ('O')
+#define SMALL_STOP      ('S')
+#define CIRCLING        ('C')
+#define ADJUST_OUT      ('U')
+#define ADJUST_IN       ('N')
+#define ORIENT_WHITE    ('W')
+#define ORIENT_CENTER   ('R')
+#define MOVE_CENTER     ('M')
+#define END             ('E')
 
 // PORTS =======================================================================
 #define FALSE                  (0x00) //

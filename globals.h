@@ -60,7 +60,10 @@ volatile unsigned char sw2_pressed;
 // TIMERS
 // ------------------------------------------------------------------------------
 extern volatile unsigned int Time;
+extern volatile unsigned int Time_Precise;
 extern volatile unsigned int Curr_Time;
+extern unsigned char TIME_DISPLAY;
+unsigned int START_TIME;
 
 //-------------------------------------------------------------------------------
 // ADC
@@ -79,6 +82,14 @@ extern unsigned char wheel_event;
 extern unsigned char config;
 unsigned int TARGET_SPEED_RIGHT;
 unsigned int TARGET_SPEED_LEFT;
+unsigned int RADIUS_TIME;
+unsigned int SPIN_TIME;
+
+//-------------------------------------------------------------------------------
+// LINE DETECTION
+// ------------------------------------------------------------------------------
+extern unsigned int BLACK_THRESHOLD;
+extern unsigned int WHITE_THRESHOLD;
 
 
 #endif /* GLOBALS_H_ */
