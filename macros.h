@@ -21,10 +21,11 @@
 #include "system.h"
 #include "switches.h"
 #include "timers.h"
-#include "akshay_state_machine.h"
 #include "ADC.h"
 #include "wheels.h"
 #include "serial.h"
+#include "commands.h"
+#include "DAC.h"
 
 
 // COMMON ======================================================================
@@ -42,8 +43,15 @@
 #define SMALL_RING_SIZE (16)
 #define LARGE_RING_SIZE (32)
 
-#define ROWS    (4)
-#define COLUMNS (32)
+#define I_ROWS    (4)
+#define I_COLUMNS (55)
+
+#define P_ROWS    (4)
+#define P_COLUMNS (10)
+
+// For the Enable PC communication global
+#define ENABLE      (1)
+#define DISABLE     (0)
 
 // message STATUS
 #define RECEIVED    ('R')
@@ -51,26 +59,36 @@
 #define TRANSMITTED ('D')
 #define COMPLETE    ('C')
 
+// IOT Rest Commands
+#define NONE        ('N')
+#define RESET       ('R')
+#define RESETTING   ('T')
+
 // SWITCHES ====================================================================
 #define DEBOUNCE_THRESHOLD  (4)
 #define YES                 (1)
 #define NO                  (0)
 
-// PROJECT 05 MOVEMENTS ========================================================
-#define MOVEMENT_1            (0x00)
-#define MOVEMENT_2            (0x01)
-#define MOVEMENT_3            (0x02)
-#define MOVEMENT_4            (0x03)
-#define MOVEMENT_5            (0x04)
-#define NONE                  ('N')
-#define WAIT                  ('W')
-#define MOVE_FORWARD          ('F')
-#define PAUSE                 ('P')
-#define PASS_MOVEMENT         ('M')
-#define MOVE_REVERSE          ('R')
-#define SPIN_CLOCK            ('S')
-#define SPIN_COUNTERCLOCK     ('C')
-#define STOP                  ('T')
+// DAC =========================================================================
+#define DAC_Begin       (2725)  // 2V
+//#define DAC_Limit       (850)   // 6.08V
+//#define DAC_Adjust      (875)   // 6.00V
+
+// we can test alternatives here too
+#define DAC_Limit         (1500) // 4.02v
+#define DAC_Adjust        (1505) // 4.00v
+//#define DAC_Limit         (1400) // 4.29v
+//#define DAC_Adjust        (1405) // 4.32v
+//#define DAC_Limit         (1300) // 4.66v
+//#define DAC_Adjust        (1300) // 4.66v
+//#define DAC_Limit         (1200) // 4.98v
+//#define DAC_Adjust        (1190) // 5.00v
+//#define DAC_Limit         (1000) // 5.61v
+//#define DAC_Adjust        (1033) // 5.50v
+//#define DAC_Limit          (715) // 6.5v
+//#define DAC_Adjust         (712) // 6.5v
+
+
 
 // TIMERS ======================================================================
 
@@ -103,13 +121,17 @@
 #define LEFT_FORWARD_SPEED      (TB3CCR4)
 #define LEFT_REVERSE_SPEED      (TB3CCR5)
 
-#define SPEED_STEP      (1000)
+#define SPEED_STEP      (50)
 #define WHEEL_PERIOD    (50005)
 #define WHEEL_OFF       (0)
 
-#define SLOW_R          (18000)
-#define SLOW_L          (20000)
-#define SLOWER          (10000)
+#define SLOW_R          (25000)
+#define SLOW_L          (35000)
+
+#define SLOW_R_FORWARD  (18000)
+#define SLOW_L_FORWARD  (36000)
+
+#define SLOWER          (20000)
 #define FAST            (50000)
 
 // need to mess around with these
@@ -131,6 +153,8 @@
 #define REVERSE_ADJUST              ('D')
 #define SPIN_MOVE_START             ('G')
 #define SPIN_ADJUST                 ('H')
+#define SPIN_CC_MOVE_START          ('B')
+#define SPIN_CC_ADJUST              ('E')
 #define INITIATE_STOP               ('N')
 #define STOP_WHEELS                 ('S')
 
@@ -138,6 +162,7 @@
 #define FORWARD_C                   ('F')
 #define REVERSE_C                   ('R')
 #define SPIN                        ('S')
+#define SPIN_CC                     ('C')
 #define OFF                         ('O')
 
 

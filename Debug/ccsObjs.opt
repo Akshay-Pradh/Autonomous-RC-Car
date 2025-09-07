@@ -1,6 +1,7 @@
 "./ADC.obj"
-"./akshay_state_machine.obj"
+"./DAC.obj"
 "./clocks.obj"
+"./commands.obj"
 "./display.obj"
 "./init.obj"
 "./interrupts_adc.obj"

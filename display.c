@@ -17,3 +17,11 @@ void Display_Process(void){
     }
   }
 }
+
+
+void clear_display(void) {
+    strcpy(display_line[0], "          ");
+    strcpy(display_line[1], "          ");
+    strcpy(display_line[2], "          ");
+    strcpy(display_line[3], "          ");
+}

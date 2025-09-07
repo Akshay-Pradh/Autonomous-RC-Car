@@ -25,10 +25,11 @@ wheels.obj: ../ports.h
 wheels.obj: ../system.h
 wheels.obj: ../switches.h
 wheels.obj: ../timers.h
-wheels.obj: ../akshay_state_machine.h
 wheels.obj: ../ADC.h
 wheels.obj: ../wheels.h
 wheels.obj: ../serial.h
+wheels.obj: ../commands.h
+wheels.obj: ../DAC.h
 
 ../wheels.c:
 
@@ -80,11 +81,13 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../timers.h:
 
-../akshay_state_machine.h:
-
 ../ADC.h:
 
 ../wheels.h:
 
 ../serial.h:
+
+../commands.h:
+
+../DAC.h:
 

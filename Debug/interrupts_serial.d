@@ -25,10 +25,11 @@ interrupts_serial.obj: ../ports.h
 interrupts_serial.obj: ../system.h
 interrupts_serial.obj: ../switches.h
 interrupts_serial.obj: ../timers.h
-interrupts_serial.obj: ../akshay_state_machine.h
 interrupts_serial.obj: ../ADC.h
 interrupts_serial.obj: ../wheels.h
 interrupts_serial.obj: ../serial.h
+interrupts_serial.obj: ../commands.h
+interrupts_serial.obj: ../DAC.h
 
 ../interrupts_serial.c:
 
@@ -80,11 +81,13 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../timers.h:
 
-../akshay_state_machine.h:
-
 ../ADC.h:
 
 ../wheels.h:
 
 ../serial.h:
+
+../commands.h:
+
+../DAC.h:
 

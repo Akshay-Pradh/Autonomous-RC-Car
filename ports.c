@@ -176,10 +176,7 @@ void Init_Port_3(unsigned char mode) {
     }
 
     // Port 3: Pin 5
-    P3SEL0 &= ~DAC_CTRL;    // DAC_CTRL GPIO Operation
-    P3SEL0 &= ~DAC_CTRL;    // DAC_CTRL GPIO Operation
-    P3OUT &= ~DAC_CTRL;     // Initial Value = Low
-    P3DIR |= DAC_CTRL;      // Direction = output
+    P3SELC |= DAC_CTRL;
 
     // Port 3: Pin 6
     P3SEL0 &= ~IOT_LINK_CPU;   // IOT_LINK_CPU GPIO Operation
@@ -283,8 +280,8 @@ void Init_Port_5(void) {
     // Port 5: Pin 4
     P5SEL0 &= ~IOT_BOOT_CPU;    // IOT_BOOT_CPU GPIO Operation
     P5SEL1 &= ~IOT_BOOT_CPU;    // IOT_BOOT_CPU GPIO Operation
-    P5OUT &= ~IOT_BOOT_CPU;     // Initial Value = Low
-    P5DIR |= IOT_BOOT_CPU;     // Direction = output
+    P5OUT |= IOT_BOOT_CPU;      // Initial Value = High
+    P5DIR |= IOT_BOOT_CPU;      // Direction = output
 };
 
 void Init_Port_6(void) {

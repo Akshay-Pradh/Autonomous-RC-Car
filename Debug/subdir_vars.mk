@@ -10,8 +10,9 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../ADC.c \
-../akshay_state_machine.c \
+../DAC.c \
 ../clocks.c \
+../commands.c \
 ../display.c \
 ../init.c \
 ../interrupts_adc.c \
@@ -29,8 +30,9 @@ C_SRCS += \
 
 C_DEPS += \
 ./ADC.d \
-./akshay_state_machine.d \
+./DAC.d \
 ./clocks.d \
+./commands.d \
 ./display.d \
 ./init.d \
 ./interrupts_adc.d \
@@ -48,8 +50,9 @@ C_DEPS += \
 
 OBJS += \
 ./ADC.obj \
-./akshay_state_machine.obj \
+./DAC.obj \
 ./clocks.obj \
+./commands.obj \
 ./display.obj \
 ./init.obj \
 ./interrupts_adc.obj \
@@ -67,8 +70,9 @@ OBJS += \
 
 OBJS__QUOTED += \
 "ADC.obj" \
-"akshay_state_machine.obj" \
+"DAC.obj" \
 "clocks.obj" \
+"commands.obj" \
 "display.obj" \
 "init.obj" \
 "interrupts_adc.obj" \
@@ -86,8 +90,9 @@ OBJS__QUOTED += \
 
 C_DEPS__QUOTED += \
 "ADC.d" \
-"akshay_state_machine.d" \
+"DAC.d" \
 "clocks.d" \
+"commands.d" \
 "display.d" \
 "init.d" \
 "interrupts_adc.d" \
@@ -105,8 +110,9 @@ C_DEPS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../ADC.c" \
-"../akshay_state_machine.c" \
+"../DAC.c" \
 "../clocks.c" \
+"../commands.c" \
 "../display.c" \
 "../init.c" \
 "../interrupts_adc.c" \

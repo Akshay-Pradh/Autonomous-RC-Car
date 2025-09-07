@@ -17,6 +17,7 @@ DAC.obj: ../clocks.h
 DAC.obj: ../display.h
 DAC.obj: ../functions.h
 DAC.obj: ../globals.h
+DAC.obj: ../macros.h
 DAC.obj: ../init.h
 DAC.obj: ../LCD.h
 DAC.obj: ../led.h
@@ -24,9 +25,11 @@ DAC.obj: ../ports.h
 DAC.obj: ../system.h
 DAC.obj: ../switches.h
 DAC.obj: ../timers.h
-DAC.obj: ../akshay_state_machine.h
 DAC.obj: ../ADC.h
 DAC.obj: ../wheels.h
+DAC.obj: ../serial.h
+DAC.obj: ../commands.h
+DAC.obj: ../DAC.h
 
 ../DAC.c:
 
@@ -62,6 +65,8 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../globals.h:
 
+../macros.h:
+
 ../init.h:
 
 ../LCD.h:
@@ -76,9 +81,13 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../timers.h:
 
-../akshay_state_machine.h:
-
 ../ADC.h:
 
 ../wheels.h:
+
+../serial.h:
+
+../commands.h:
+
+../DAC.h:
 

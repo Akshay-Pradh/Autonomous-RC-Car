@@ -30,6 +30,8 @@ char forward;
 // SERIAL
 //------------------------------------------------------------------------------
 
+unsigned char allow_PC_TX;            // Enable PC communication flag
+
 volatile unsigned int usb_rx_ring_wr;   // This is an index for Writing the character into the usb ring buffer
 volatile unsigned int usb_rx_ring_rd;   // This is an index for Reading the character out of the usb ring buffer
 
@@ -43,15 +45,57 @@ char IOT_Char_Rx[16];                   // character ring buffer for IOT serial 
 
 char transmit_array[32];                // character array for transmitting data
 extern unsigned int t_index;
+extern unsigned char transmitting_message;  // transmitting message flag for UCA1
 
-extern char message_status;             // message status for PROJECT08
+extern unsigned char message_status;             // message status for PROJECT08
 
-extern char NCSU_array[9];
-char process_buffer[4][32];
-int display_row;
+unsigned char command_received;
+char process_buffer[4][10];
 extern unsigned int pb_index_row;
 extern unsigned int pb_index_col;
+unsigned int process_row;
+extern unsigned char process_command;   // Flag for commands process to let it know we need to process a command in the process row
 
+//------------------------------------------------------------------------------
+// IOT COMMANDS
+//------------------------------------------------------------------------------
+
+unsigned char iot_command_received;
+extern unsigned char iot_command_complete;  // flag to make sure previous command is complete
+
+extern unsigned char IOT_reset;
+extern unsigned char IOT_line_ready;
+
+extern unsigned char iot_okay_check;
+extern unsigned char iot_server_check;
+extern unsigned char iot_mux_check;
+
+char IOT_buffer[4][55];
+extern unsigned int iot_index_row;
+extern unsigned int iot_index_col;
+unsigned int iot_row;
+
+char iot_transmit_array[32];
+extern unsigned int iot_t_index;
+
+extern unsigned int IOT_parse;
+extern unsigned int ip_address_found;
+
+char ip_address[10];
+char ssid_display[10];
+extern unsigned int ssid_found;
+
+// IOT Commands
+extern char AT[4];
+extern char ip_mac[10];
+extern char ssid[12];
+extern char mux[13];
+extern char server[22];
+
+//------------------------------------------------------------------------------
+// DAC
+// -----------------------------------------------------------------------------
+unsigned int DAC_data;
 
 //------------------------------------------------------------------------------
 // SHAPES
@@ -106,6 +150,9 @@ unsigned int TARGET_SPEED_RIGHT;
 unsigned int TARGET_SPEED_LEFT;
 unsigned int RADIUS_TIME;
 unsigned int SPIN_TIME;
+
+extern unsigned char movement_letter;
+extern unsigned int movement_duration;
 
 //-------------------------------------------------------------------------------
 // LINE DETECTION

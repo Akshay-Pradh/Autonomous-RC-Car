@@ -31,18 +31,18 @@ void Switch1_Process(void){
                  sw1_pressed = NO;
                  sw1_toggle++;
 
-                 if (sw1_toggle == 1) {
-                    strcpy(display_line[2], "115,200 Hz");
-                    display_changed = TRUE;
-                    setBaudRate(115200);                        // set our baud rate to 115,200 Hz
-
-                 }
-                 else if (sw1_toggle == 2) {
-                    strcpy(display_line[2], "460,800 Hz");
-                    display_changed = TRUE;
-                    setBaudRate(460800);                        // set our baud rate to 460,800 Hz
-                 }
-                 else sw1_toggle = 0;
+//                 if (sw1_toggle == 1) {
+//                    strcpy(display_line[2], "460,800 Hz");
+//                    display_changed = TRUE;
+//                    setBaudRate(460800);                        // set our baud rate to 460,800 Hz
+//
+//                 }
+//                 else if (sw1_toggle == 2) {
+//                    strcpy(display_line[2], "115,200 Hz");
+//                    display_changed = TRUE;
+//                    setBaudRate(115200);                        // set our baud rate to 115,200 Hz
+//                 }
+//                 else sw1_toggle = 0;
      }
 }
 
@@ -54,13 +54,5 @@ void Switch2_Process(void){
     if (sw2_pressed){
                   // SW2 is pressed
                   sw2_pressed = NO;
-                  if (message_status == RECEIVED) {
-                      message_status = TRANSMIT;    // change the message status to TRANSMIT
-                      UCA0IE |= UCTXIE;           // enable the transmit array to send characters back to the AD3
-                  }
-                  // need to send the message back to the AD3 if we are in the correct state (maybe a received flag)
-                  // we can enable the transmit and then disable it after
-
-
     }
 }

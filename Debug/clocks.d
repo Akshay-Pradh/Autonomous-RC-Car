@@ -25,10 +25,11 @@ clocks.obj: ../ports.h
 clocks.obj: ../system.h
 clocks.obj: ../switches.h
 clocks.obj: ../timers.h
-clocks.obj: ../akshay_state_machine.h
 clocks.obj: ../ADC.h
 clocks.obj: ../wheels.h
 clocks.obj: ../serial.h
+clocks.obj: ../commands.h
+clocks.obj: ../DAC.h
 
 ../clocks.c:
 
@@ -80,11 +81,13 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../timers.h:
 
-../akshay_state_machine.h:
-
 ../ADC.h:
 
 ../wheels.h:
 
 ../serial.h:
+
+../commands.h:
+
+../DAC.h:
 

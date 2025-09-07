@@ -7,8 +7,6 @@
 
 #include "macros.h"
 
-unsigned char DISPLAY_TIME = 0x00;
-
 //-------------------------------------------------------------------------------
 //                                  TIMER 0
 //-------------------------------------------------------------------------------
@@ -57,6 +55,14 @@ __interrupt void Timer_B0_CCR1_2_OV_VECTOR_ISR(void){
             break;
         case 14:
             // overflow
+            DAC_data = DAC_data - 100;
+            SAC3DAC = DAC_data;             // Initial DAC data
+            if (DAC_data <= DAC_Limit){
+               DAC_data = DAC_Adjust;
+               SAC3DAC = DAC_data;
+               TB0CTL &= ~TBIE;
+               P1OUT &= ~RED_LED;
+            }
             break;
         default: break;
     }

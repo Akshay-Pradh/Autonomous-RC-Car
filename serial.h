@@ -10,7 +10,10 @@
 
 void Init_Serial_UCA0(void);
 void Init_Serial_UCA1(void);
+
 void setBaudRate(long baud);
+void setBaudRateUCA0(long baud);
+void setBaudRateUCA1(long baud);
 
 
 

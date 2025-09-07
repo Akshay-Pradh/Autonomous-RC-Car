@@ -25,10 +25,11 @@ timers.obj: ../ports.h
 timers.obj: ../system.h
 timers.obj: ../switches.h
 timers.obj: ../timers.h
-timers.obj: ../akshay_state_machine.h
 timers.obj: ../ADC.h
 timers.obj: ../wheels.h
 timers.obj: ../serial.h
+timers.obj: ../commands.h
+timers.obj: ../DAC.h
 
 ../timers.c:
 
@@ -80,11 +81,13 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../timers.h:
 
-../akshay_state_machine.h:
-
 ../ADC.h:
 
 ../wheels.h:
 
 ../serial.h:
+
+../commands.h:
+
+../DAC.h:
 

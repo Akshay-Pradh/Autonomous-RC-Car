@@ -25,10 +25,11 @@ serial.obj: ../ports.h
 serial.obj: ../system.h
 serial.obj: ../switches.h
 serial.obj: ../timers.h
-serial.obj: ../akshay_state_machine.h
 serial.obj: ../ADC.h
 serial.obj: ../wheels.h
 serial.obj: ../serial.h
+serial.obj: ../commands.h
+serial.obj: ../DAC.h
 
 ../serial.c:
 
@@ -80,11 +81,13 @@ C:/ti/ccs1230/ccs/tools/compiler/ti-cgt-msp430_21.6.1.LTS/include/xlocale/_strin
 
 ../timers.h:
 
-../akshay_state_machine.h:
-
 ../ADC.h:
 
 ../wheels.h:
 
 ../serial.h:
+
+../commands.h:
+
+../DAC.h:
 

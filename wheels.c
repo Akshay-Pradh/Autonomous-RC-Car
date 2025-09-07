@@ -8,10 +8,74 @@
 #include "macros.h"
 
 // Globals
+
 unsigned char wheel_event = IDLE;
 unsigned char config = NONE;
 unsigned int BLACK_THRESHOLD = 500;
 unsigned int WHITE_THRESHOLD = 200;
+
+unsigned char movement_letter = 'N';
+unsigned int movement_duration = 0;
+
+
+void Motion_Process(void) {
+    switch (movement_letter) {
+        case 'F':
+            Forward_On();
+            // display the motion of the car
+            strcpy(display_line[1], " FORWARD! ");
+            lcd_BIG_mid();
+            display_changed = TRUE;
+
+            Curr_Time = Time_Precise;
+            movement_letter = 'S';
+            break;
+        case 'R':
+            Reverse_On();
+            // display the motion of the car
+            strcpy(display_line[1], " REVERSE! ");
+            lcd_BIG_mid();
+            display_changed = TRUE;
+
+            Curr_Time = Time_Precise;
+            movement_letter = 'S';
+            break;
+        case 'C':
+            Spin_Clock();
+            // display the motion of the car
+            strcpy(display_line[1], "TURNING 90");
+            lcd_BIG_mid();
+            display_changed = TRUE;
+
+            Curr_Time = Time_Precise;
+            movement_letter = 'S';
+            break;
+        case 'L':
+            Spin_Counter_Clock();
+            // display the motion of the car
+            strcpy(display_line[1], "TURNING 45");
+            lcd_BIG_mid();
+            display_changed = TRUE;
+
+            Curr_Time = Time_Precise;
+            movement_letter = 'S';
+            break;
+        case 'S':
+            if (Time_Precise > Curr_Time + movement_duration) {
+                Motors_Off();
+
+                // display the motion of the car
+                strcpy(display_line[1], " STOPPED! ");
+                lcd_BIG_mid();
+
+                movement_letter = 'N';      // set to a default N/A condition
+                movement_duration = 0;      // reset movement duration
+                iot_command_complete = YES; // set command complete flag back to high when motors stopped
+            }
+            break;
+        default: break;
+    }
+}
 
 void Wheels_Process(void){
     switch(wheel_event) {
@@ -28,6 +92,9 @@ void Wheels_Process(void){
                     break;
                 case SPIN:
                     wheel_event = SPIN_MOVE_START;
+                    break;
+                case SPIN_CC:
+                    wheel_event = SPIN_CC_MOVE_START;
                     break;
                 case OFF:
                     wheel_event = INITIATE_STOP;
@@ -108,6 +175,7 @@ void Wheels_Process(void){
                 // turn on RED_LED indicating ERROR
                 P1OUT |= RED_LED;
              }
+            break;
 
         case SPIN_ADJUST:
             if (RIGHT_FORWARD_SPEED < TARGET_SPEED_RIGHT) {
@@ -124,6 +192,35 @@ void Wheels_Process(void){
             }
             if (TARGET_SPEED_RIGHT == WHEEL_OFF && TARGET_SPEED_LEFT == WHEEL_OFF) {
                 wheel_event = INITIATE_STOP;
+            }
+            break;
+
+        case SPIN_CC_MOVE_START:     // Begin Spin Counter Clockwise Process
+            // RIGHT forward LEFT reverse therefore we must make sure RIGHT reverse and LEFT forward are off
+            if ((RIGHT_REVERSE_SPEED == WHEEL_OFF && LEFT_FORWARD_SPEED == WHEEL_OFF)) wheel_event = SPIN_CC_ADJUST;
+            else {
+                // switch event to INITIATE_STOP
+                wheel_event = INITIATE_STOP;
+                // turn on RED_LED indicating ERROR
+                P1OUT |= RED_LED;
+             }
+            break;
+
+        case SPIN_CC_ADJUST:
+            if (RIGHT_REVERSE_SPEED < TARGET_SPEED_RIGHT) {
+              RIGHT_REVERSE_SPEED += SPEED_STEP;
+              if (RIGHT_REVERSE_SPEED > TARGET_SPEED_RIGHT) {
+                  RIGHT_REVERSE_SPEED = TARGET_SPEED_RIGHT;       // in case of overshoot when adding speed_step
+              }
+            }
+            if (LEFT_FORWARD_SPEED < TARGET_SPEED_LEFT) {
+              LEFT_FORWARD_SPEED += SPEED_STEP;
+              if (LEFT_FORWARD_SPEED > TARGET_SPEED_LEFT) {
+                  LEFT_FORWARD_SPEED = TARGET_SPEED_LEFT;         // in case of overshoot when adding speed_step
+              }
+            }
+            if (TARGET_SPEED_RIGHT == WHEEL_OFF && TARGET_SPEED_LEFT == WHEEL_OFF) {
+              wheel_event = INITIATE_STOP;
             }
             break;
 
@@ -154,8 +251,8 @@ void Motors_Off(void) {
 void Forward_On(void) {
     wheel_event = CONFIGURE_WHEEL_SPEEDS;
     config = FORWARD_C;
-    TARGET_SPEED_LEFT = SLOW_L;
-    TARGET_SPEED_RIGHT = SLOW_R;
+    TARGET_SPEED_LEFT = SLOW_L_FORWARD;
+    TARGET_SPEED_RIGHT = SLOW_R_FORWARD;
 }
 
 void Forward_Off(void) {
@@ -185,6 +282,17 @@ void Spin_Clock(void) {
     TARGET_SPEED_LEFT = SLOWER;
     TARGET_SPEED_RIGHT = SLOWER;
 }
+
+void Spin_Counter_Clock(void) {
+    wheel_event = CONFIGURE_WHEEL_SPEEDS;
+    config = SPIN_CC;
+    TARGET_SPEED_LEFT = SLOWER;
+    TARGET_SPEED_RIGHT = SLOWER;
+}
+
+
+
+// Functions for following black circle
 
 void Circle_Path(void) {
     wheel_event = CONFIGURE_WHEEL_SPEEDS;

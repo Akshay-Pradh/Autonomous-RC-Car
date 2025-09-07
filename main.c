@@ -10,6 +10,10 @@
 //------------------------------------------------------------------------------
 #include "macros.h"
 
+
+char password[4] = "1080";               // password of my device
+unsigned char process_movement = NO;     // flag for processing movement based on the password
+
 //void main(void){
 void main(void){
 //    WDTCTL = WDTPW | WDTHOLD;   // stop watchdog timer
@@ -31,7 +35,8 @@ void main(void){
   Init_LCD();                          // Initialize LCD
   Init_ADC();                          // Initialize ADC (start reading values)
   Init_Serial_UCA0();                  // Initialize UCA0
-//  Init_Serial_UCA1();                  // Initialize UCA1
+  Init_Serial_UCA1();                  // Initialize UCA1
+  Init_DAC();                          // Initialize DAC
   //P2OUT &= ~RESET_LCD;
 
   // Place the contents of what you want on the display, in between the quotes
@@ -39,7 +44,7 @@ void main(void){
   strcpy(display_line[0], "          ");
   strcpy(display_line[1], "          ");
   strcpy(display_line[2], "          ");
-  strcpy(display_line[2], "460,800 Hz");
+  strcpy(display_line[2], "115,200 Hz");
   display_changed = TRUE;
 //  Display_Update(0,0,0,0);
 
@@ -53,63 +58,182 @@ void main(void){
 // Beginning of the "While" Operating System
 //------------------------------------------------------------------------------
   while(ALWAYS) {                      // Can the Operating system run
+    Commands_Process();                // Process commands from the PC
     Switches_Process();                // Check for switch state change
     Display_Process();                 // Update Display
     Wheels_Process();                  // Check for Wheel Changes
+    Motion_Process();                  // Updates Motion based on IOT commands
+    IOT_Process();                     // Check for IOT commands
 
     P3OUT ^= TEST_PROBE;               // Change State of TEST_PROBE OFF
 
-    // message status -> switch case
-    switch(message_status) {
-        case COMPLETE:      // display the default status WAITING
-            strcpy(display_line[0], "WAITING...");
-            display_changed = TRUE;
+    unsigned int i, j, k;              // Loop index variables
+
+    // IOT reset code (upon initialization)
+    switch (IOT_reset) {
+        case RESET:
+            Curr_Time = Time_Precise;    // Set the Curr_Time
+            IOT_reset = RESETTING;
             break;
-        case RECEIVED:      //
-            strcpy(display_line[0], " RECEIVED ");
-            strcpy(display_line[1], "          ");          // clear line 2 of the display before moving
-            display_changed = TRUE;
-            break;
-        case TRANSMIT:
-            strcpy(display_line[0], " TRANSMIT ");
-            display_changed = TRUE;
-            break;
-        case TRANSMITTED:
-            strcpy(display_line[3], "          ");          // clear line 4 of the display
-            strncpy(display_line[1], transmit_array, 10);   // display transmitted string to display line 2 (move from 4)
-            message_status = COMPLETE;                      // return back to message status = COMPLETE
+        case RESETTING:
+            if (Time_Precise > Curr_Time + 2) {
+                P3OUT |= IOT_RN_CPU;       // Set IOT_EN active high after 100ms (reset)
+                IOT_reset = NONE;          // Set the reset to NONE state
+            }
             break;
         default: break;
     }
 
+   // IOT IP Display Code
+    if (IOT_parse && ip_address_found && IOT_line_ready) {    // parsing through IOT message for ip_address
+
+        IOT_parse = NO;             // reset IOT_parse flag
+        ip_address_found = NO;      // reset ip address found flag
+        IOT_line_ready = NO;        // reset IOT_line_ready flag
+
+        j = 0;          // setting IOT buffer loop index to 0
+        k = 2;          // setting ip_address loop index to 2
+
+        while (IOT_buffer[iot_row][j] != '"') j++;     // look for first quote
+        j++;                                           // move one past quote
+
+        unsigned int point_count = 0;
+        while (point_count < 2 && k < 10) {
+            if (IOT_buffer[iot_row][j] == '.') {
+                point_count++;
+            }
+            ip_address[k++] = IOT_buffer[iot_row][j];
+            j++;
+        }
+
+        strncpy(display_line[2], ip_address, 10);
+        display_changed = TRUE;
+
+        // clear the ip_address display array (with spaces)
+        for (i = 0; i < sizeof(ip_address); i++) {
+            ip_address[i] = ' ';
+        }
+
+        k = 2;          // resetting ip_address loop index to 2
+
+        while (IOT_buffer[iot_row][j] != '"' &&  k < 10) {    // copy characters into the ip address display array until next quote
+            ip_address[k++] = IOT_buffer[iot_row][j];
+            j++;
+        }
+
+        strncpy(display_line[3], ip_address, 10);
+        display_changed = TRUE;
+    }
+
+    // SSID DISPLAY CODE
+    if (IOT_parse && ssid_found && IOT_line_ready) {
+
+        IOT_parse = NO;             // reset IOT_parse flag code
+        ssid_found = NO;            // reset ssid_found flag
+        IOT_line_ready = NO;        // reset IOT_line_ready flag
+
+        j = 0;
+        k = 0;
+
+        while (IOT_buffer[iot_row][j] != '"') j++;     // look for first quote
+        j++;                                           // move one past quote
+
+        while (IOT_buffer[iot_row][j] != '"') {
+            ssid_display[k++] = IOT_buffer[iot_row][j];
+            j++;
+        }
+
+        strncpy(display_line[0], ssid_display, 10);
+        display_changed = TRUE;
+
+        // once done displaying the SSID, we want to set up CIPMUX
+
+        for (i = 0; i < sizeof(mux); i++) {
+            iot_transmit_array[i] = mux[i];
+        }
+        iot_t_index = 0;            // reset transmit index
+        UCA0IE |= UCTXIE;           // enable transmit
+        iot_mux_check = YES;        // we want to make sure we get OKAY from MUX before Server connection
+    }
+
+
+    // CODE TO PARSE THROUGH PASSWORD
+    if (IOT_parse && iot_command_received && IOT_line_ready) {
+
+        IOT_parse = NO;                  // reset IOT_parse flag code
+        iot_command_received = NO;       // reset iot_command_received flag
+        IOT_line_ready = NO;             // reset IOT_line_ready flag
+
+        j = 0;
+        k = 0;
+
+        while (IOT_buffer[iot_row][j] != '^') j++;  // increment until we find our hat character
+        j++;                                        // move one past the hat character (first key of password)
+
+        // testing the password
+        process_movement = YES;
+
+        for (i = 0; i < 4; i++) {
+            if (IOT_buffer[iot_row][j++] != password[i]) {
+                process_movement = NO;
+            }
+        }
+
+        // save the motion character and motion duration if we want to process movement
+        if (process_movement) {
+            movement_letter = IOT_buffer[iot_row][j++];     // store the movement letter after the password
+            for (k = 0; k < 4; k++) {                       // storing the numbers from array as one number: movement duration
+                movement_duration = movement_duration * 10 + (IOT_buffer[iot_row][j++] - '0');
+            }
+            process_movement = NO;      // reset the process_movement flag
+            clear_display();            // clear the display since we are about to display motion
+        }
+        else {
+            iot_command_complete = YES; // set command complete flag back to high if password is incorrect (command execution complete)
+        }
+
+    }
+
+// PINGING CODE (HAVE TO IMPLEMENT THIS (MAYBE))
+//    if (allow_PC_TX && message_status == COMPLETE) {
+//        message_status = TRANSMIT;
+//        t_index = 0;            // reset transmit index to 0
+//        Curr_Time = Time;       // Set the curr_time
+//    }
+//
+//    if (allow_PC_TX && message_status == TRANSMIT) {
+//        if (Time > Curr_Time + 5) {
+//            message_status = TRANSMITTED;
+//            strcpy(transmit_array, "Test String\n");
+//            UCA1IE |= UCTXIE;                    // enable UCA1 transmit (since disabled after sending string)
+//        }
+//    }
+
+
     // check if rd != wr for IOT ring buffer
-    if (iot_rx_ring_rd != iot_rx_ring_wr) {
+    if (usb_rx_ring_rd != usb_rx_ring_wr) {
         // we move character from ring buffer to process buffer
-        process_buffer[pb_index_row][pb_index_col] = IOT_Char_Rx[iot_rx_ring_rd];
-        if (IOT_Char_Rx[iot_rx_ring_rd] == '\n') {
-            display_row = pb_index_row;     // save the row index for displaying
+        process_buffer[pb_index_row][pb_index_col] = USB_Char_Rx[usb_rx_ring_rd];
+        if (USB_Char_Rx[usb_rx_ring_rd] == '\r') {
+
+            process_row = pb_index_row;     // save the row index for displaying
             pb_index_row++;                 // move to the next row
-            if (pb_index_row >= ROWS) pb_index_row = 0;
+            if (pb_index_row >= P_ROWS) pb_index_row = 0;
             pb_index_col = 0;               // reset the column to 0
 
             // Clear the following row
-            int i;
-            for (i = 0; i < COLUMNS; i++) {         // clear the next line
+            for (i = 0; i < P_COLUMNS; i++) {         // clear the next line
                 process_buffer[pb_index_row][i] = 0x00;
             }
-            // Process received message: display on line 4
-            strncpy(display_line[3], process_buffer[display_row], 10);      // displays 10 characters (not including \n)
-            // Process received message: send to the transmit array
-            strncpy(transmit_array, process_buffer[display_row], 11);       // copied the \n character
-            display_changed = TRUE;
+            process_command = YES;      // process the command we have read into the process buffer
         }
         else {
             pb_index_col++;     // increment process buffer pointer
             // dont check for the end of column (assume that process buffer long enough to store any message)
         }
 
-        iot_rx_ring_rd++;   // increment IOT ring rd index
-        if (iot_rx_ring_rd >= (sizeof(IOT_Char_Rx))) iot_rx_ring_rd = BEGINNING;   // Circular buffer back to beginning
+        usb_rx_ring_rd++;   // increment IOT ring rd index
+        if (usb_rx_ring_rd >= (sizeof(USB_Char_Rx))) usb_rx_ring_rd = BEGINNING;   // Circular buffer back to beginning
     }
 
   }
